@@ -1,0 +1,163 @@
+.container-card {
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px 0px;
+}
+
+.simples {
+    background: var(--c-g-500);
+}
+
+.grayy {
+    background: var(--c-g-100);
+}
+
+.card {
+    max-width: 253px;
+    max-height: 425px;
+    width: calc(33% - 20px);
+    background: var(--c-w);
+    padding: 30px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+}
+
+.card:hover {
+    transform: scale(105%);
+}
+
+.card .price-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price-section .price-area {
+    width: 200px;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.price-section .price-area .inner-area img {
+    width: 200px;
+    height: 120px;
+}
+
+/* seção de escrita */
+.card .features li {
+    margin-bottom: 10px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* botao */
+.card .btn {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.card .btn button {
+    width: 75%;
+    height: 5%;
+    background: var(--c-b-900);
+    color: var(--c-w);
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.card .btn button:hover {
+    background: var(--c-b);
+    color: var(--c-g-100);
+}
+
+.card .rib {
+    position: relative;
+}
+
+.card .ribbon {
+    height: 120px;
+    width: 220px;
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    overflow: hidden;
+}
+
+.card .ribbon span {
+    width: 130px;
+    height: 20px;
+    top: 29px;
+    left: -30px;
+    padding: 2px;
+    position: absolute;
+    background: var(--c-b);
+    color: var(--c-w);
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    transform: rotate(-45deg);
+}
+
+/* media query */
+@media only screen and (max-width: 425px) {
+    .container-card {
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        padding-bottom: 30px;
+    }
+
+    .card {
+        width: calc(90% - 10px);
+        height: 450px;
+    }
+
+    .price-section .price-area {
+        width: 170px;
+        height: 120px;
+        border-radius: 10px;
+    }
+
+    .price-section .price-area .inner-area img {
+        width: 200px;
+        height: 120px;
+    }
+
+    .card .btn {
+        display: flex;
+        margin-top: 0px;
+        justify-content: center;
+    }
+
+    .card .btn button {
+        width: 80%;
+        height: 40px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .card {
+        width: calc(90% - 10px);
+        height: 450px;
+    }
+
+    .card .btn {
+        display: flex;
+        margin-top: 0px;
+        justify-content: center;
+    }
+
+    .card .btn button {
+        width: 80%;
+        height: 40px;
+    }
+}

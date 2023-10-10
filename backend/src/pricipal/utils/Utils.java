@@ -1,14 +1,12 @@
-package pricipal;
+package pricipal.utils;
 
 public class Utils {
-	public Utils() {}
-
 	public void exibirMenuPrincipal() {
 		System.out.println("Escolha 1 para acessar menu usuario: ");
 		System.out.println("Escolha 2 para acessar menu cliente: ");
 		System.out.println("Escolha 3 para acessar menu fornecedor: ");
 		System.out.println("Escolha 4 para acessar menu de Pacotes de Viagens: ");
-		System.out.println("Escolha 0 para sair...: ");
+		System.out.println("Escolha 0 para sair. ");
 		System.out.print("Eai major, qual opção você escolheu? ");
 	}
 
@@ -40,7 +38,7 @@ public class Utils {
 		System.out.println("3 para fornecer Hospedagem");
 		System.out.println("4 para deletar forenecor");
 		System.out.println("5 para mostrar todos os fornecedores");
-		System.out.println("0 para voltar ao menu principal...");
+		System.out.println("0 para voltar ao menu principal.");
 		System.out.print("Eai major, qual opção você escolheu? ");
 	}
 
@@ -49,7 +47,12 @@ public class Utils {
 		System.out.println("0 para voltar ao menu principal...");
 		System.out.print("Eai major, qual opção você escolheu? ");
 	}
+	public static String escreverColorido(Colors cor,String texto){
+		Colors.BLACK.getColor();
+		return (cor.getColor()+ texto + Colors.RESET.getColor());
+	}
 }
+
 
 
 

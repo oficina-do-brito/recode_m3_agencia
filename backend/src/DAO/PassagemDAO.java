@@ -37,10 +37,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 					id = super.rs.getInt(1);
 				}
 				return id;
-			} else {
-				System.out.println("Nenhuma Passagem foi criado");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -60,10 +57,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 			pst.setDouble(2, obj.getPreco());
 			pst.setInt(3, obj.getTipo());
 			pst.setInt(4, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Passagem alterado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -78,10 +72,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM Passagem WHERE Passagem.id =?");
 			super.pst.setInt(1, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Passagem deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -96,10 +87,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM Passagem WHERE Passagem.id =?");
 			super.pst.setInt(1, id);
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Passagem deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {

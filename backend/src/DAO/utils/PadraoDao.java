@@ -10,6 +10,4 @@ public abstract class PadraoDao {
 	protected Statement st = null;
 	protected PreparedStatement pst = null;
 	protected ResultSet rs = null;
-
-    public PadraoDao() {}
 }

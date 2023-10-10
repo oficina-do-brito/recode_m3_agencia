@@ -23,12 +23,8 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 					.prepareStatement("INSERT INTO  revisa (id_administrador, id_pacote_viagem) values(?,?)");
 			super.pst.setInt(1, obj.getIdAdministrador());
 			super.pst.setInt(2, obj.getIdPacoteViagem());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Usuario alterado com sucesso %d linhas afetadas", linhasAlteradas);
-			if (linhasAlteradas > 0) {
-				return 1;
-			}
+			super.pst.executeUpdate();
+			return 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -45,9 +41,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 			super.pst = super.c1
 					.prepareStatement("UPDATE revisa revisa.id_administrador=? WHERE revisa.id_administrador=?");
 			super.pst.setInt(1, obj.getIdAdministrador());
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Revisao alterada com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -76,10 +70,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement("DELETE FROM revisa WHERE revisa.id_administrador");
 			super.pst.setInt(1, id);
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Usuario deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {

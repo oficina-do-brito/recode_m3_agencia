@@ -31,16 +31,13 @@ public class EnderecoDAO extends PadraoDao implements IGenericDAO<Endereco>{
 
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
-				System.out.printf("Inserido %d Endereco no banco, ...  %n %n", linhasAlteradas);
 				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}
 				return id;
-			} else
-				System.out.println("nenhuma Endereco foi criado");
-
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -27,9 +28,9 @@ public class Fornecedor extends Usuario {
 		this.idUsuario = idUsuario;
 	}
 	
-	public Fornecedor(Integer id, String nome, String email, String password, String telefone, String imagem,
+	public Fornecedor(Integer id, String nome, String email, String password, String telefone, String imagem, Date dataLogin,
 			Integer tipoUsuario, Integer idEndereco, String CNPJ, Integer tipoServico,Integer idUsuario) {
-		super(idUsuario,nome,email,password,telefone,imagem,tipoUsuario,idEndereco);
+		super(idUsuario,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,idEndereco);
 		
 		this.id = id;
 		this.CNPJ = CNPJ;

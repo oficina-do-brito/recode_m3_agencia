@@ -31,7 +31,6 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.pst.setDate(6, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
 			super.pst.setInt(7, obj.getTipoUsuario());
 			super.pst.setInt(8, obj.getIdEndereco());
-
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
 				super.rs = super.pst.getGeneratedKeys();
@@ -40,10 +39,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 					id = super.rs.getInt(1);
 				}
 				return id;
-			} else {
-				System.out.println("nenhuma usuario foi criado");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -63,12 +59,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.pst.setString(2, obj.getPassword());
 			super.pst.setString(3, obj.getImagem());
 			super.pst.setInt(4, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			if(linhasAlteradas>0){
-				System.out.printf("Usuario alterado com sucesso %d linhas afetadas", linhasAlteradas);
-			}
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -83,11 +74,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.id =?");
 			super.pst.setInt(1, obj.getId());
-			int linhasAlteradas = super.pst.executeUpdate();
-			if(linhasAlteradas>0){
-				System.out.printf("Usuario deletado com sucesso %d linhas afetadas", linhasAlteradas);
-			}
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -102,17 +89,12 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.id =?");
 			pst.setInt(1, id);
-			int linhasAlteradas = super.pst.executeUpdate();
-			if(linhasAlteradas>0){
-				System.out.printf("Usuario deletado com sucesso %d linhas afetadas", linhasAlteradas);
-			}
-			
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
 			Db.closeStatement(super.pst);
 		}
-
 	}
 
 	@Override
@@ -124,10 +106,9 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.rs = super.st.executeQuery("SELECT * FROM Usuario WHERE Usuario.id =?");
 			super.rs.first();
 			u = new Usuario(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("email"),
-					super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),
+					super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),super.rs.getDate("data_login"),
 					super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"));
 			return u;
-
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -142,15 +123,14 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		try {
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT id,nome,email,password,telefone,imagem,tipo_usuario,id_endereco FROM Usuario");
+			super.rs = super.st.executeQuery("SELECT id,nome,email,password,telefone,imagem,data_login,tipo_usuario,id_endereco FROM Usuario");
 			while (super.rs.next()) {
 				Usuario u = new Usuario(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("email"),
-				super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),
+				super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),super.rs.getDate("data_login"),
 				super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"));
 				usuarios.add(u);
 			}
 			return usuarios;
-
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {

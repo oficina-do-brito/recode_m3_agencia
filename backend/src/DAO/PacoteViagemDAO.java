@@ -44,10 +44,7 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
                     id = super.rs.getInt(1);
                 }
                 return id;
-            } else {
-                System.out.println("Nenhuma PacoteViagem foi criado");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -74,16 +71,12 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
             super.pst.setString(6, obj.getImagem());
             super.pst.setDate(7, new java.sql.Date(obj.getPrazoCancelamento().getTime()));
             super.pst.setInt(8, obj.getIdOrigemDestino());
-
-            int linhasAlteradas = super.pst.executeUpdate();
-            System.out.printf("PacoteViagem alterado com sucesso %d linhas afetadas", linhasAlteradas);
-
+            super.pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             Db.closePreparedStatement(super.pst);
         }
-
     }
 
     @Override
@@ -92,16 +85,12 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
             super.c1 = Db.getConnection();
             super.pst = c1.prepareStatement("DELETE FROM PacoteViagem WHERE PacoteViagem.id =?");
             pst.setInt(1, obj.getId());
-
-            int linhasAlteradas = super.pst.executeUpdate();
-            System.out.printf("PacoteViagem deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+            super.pst.executeUpdate();
         } catch (SQLException e) {
             throw new DbIntegrityException(e.getMessage());
         } finally {
             Db.closePreparedStatement(super.pst);
         }
-
     }
 
     @Override
@@ -111,9 +100,7 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
             super.pst = c1.prepareStatement("DELETE FROM PacoteViagem WHERE PacoteViagem.id =?");
             super.pst.setInt(1, id);
 
-            int linhasAlteradas = super.pst.executeUpdate();
-            System.out.printf("PacoteViagem deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+            super.pst.executeUpdate();
         } catch (SQLException e) {
             throw new DbIntegrityException(e.getMessage());
         } finally {

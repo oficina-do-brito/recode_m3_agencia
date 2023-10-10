@@ -38,10 +38,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 					id = super.rs.getInt(1);
 				}
 				return id;
-			} else {
-				System.out.println("nenhuma Hospedagem foi criado");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -61,10 +58,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			super.pst.setString(2, obj.getImagem());
 			super.pst.setDouble(3, obj.getPreco());
 			super.pst.setInt(4, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Hospedagem alterado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -79,10 +73,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM Hospedagem WHERE Hospedagem.id =?");
 			super.pst.setInt(1, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Hospedagem deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -97,10 +88,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM Hospedagem WHERE Hospedagem.id =?");
 			pst.setInt(1, id);
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Hospedagem deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {

@@ -1,7 +1,6 @@
 package DAO.utils;
 
 import java.util.ArrayList;
-
 public interface IGenericDAO<T> {
 		public Integer save(T obj);
 	    public void update(T obj);

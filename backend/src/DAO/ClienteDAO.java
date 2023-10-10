@@ -59,10 +59,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 			super.pst.setInt(1, obj.getNumeroViagens());
 			super.pst.setString(2, obj.getcartaoCredito());
 			super.pst.setInt(3, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Cliente alterado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -76,10 +73,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement("DELETE FROM Cliente WHERE Cliente.id =?");
 			super.pst.setInt(1, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Cliente deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -93,9 +87,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement("DELETE FROM Cliente WHERE Cliente.id =?");
 			pst.setInt(1, id);
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("Cliente deletado com sucesso %d linhas afetadas", linhasAlteradas);
+			super.pst.executeUpdate();
 
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());

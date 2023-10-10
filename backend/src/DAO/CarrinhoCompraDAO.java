@@ -30,17 +30,13 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
-				System.out.printf("Inserido %d usuario no banco, ... %n %n", linhasAlteradas);
 				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}
 				return id;
-			} else {
-				System.out.println("nenhuma usuario foi criado");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -58,10 +54,7 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 					"UPDATE CarrinhoCompra SET  CarrinhoCompra.forma_pagamento=? WHERE CarrinhoCompra.id = ?");
 			super.pst.setInt(1, obj.getFormaPagamento());
 			super.pst.setInt(2, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("CarrinhoCompra alterado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -76,10 +69,7 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM CarrinhoCompra WHERE CarrinhoCompra.id =?");
 			super.pst.setInt(1, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("CarrinhoCompra deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -94,10 +84,7 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM CarrinhoCompra WHERE CarrinhoCompra.id =?");
 			pst.setInt(1, id);
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("CarrinhoCompra deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -117,7 +104,6 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 			u = new CarrinhoCompra(super.rs.getInt("id"), super.rs.getDouble("valor_total"), super.rs.getInt("forma_pagamento"),
 					super.rs.getInt("quant_items"), super.rs.getInt("id_cliente"));
 			return u;
-
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {

@@ -114,12 +114,6 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 			super.pst.setInt(1, id);
 			super.rs = pst.executeQuery();
 			super.rs.first();
-
-			/*
-			 * Usuario -> id; nome; email; password; telefone; imagem;dataLogin;
-			 * tipoUsuario; idEndereco; fORNECEDOR -> id; CNPJ; tipoServico; idUsuario;
-			 */
-
 			f = new Fornecedor(rs.getInt("id"), rs.getString("CNPJ"), rs.getInt("tipoServico"),
 					rs.getInt("id_usuario"));
 
@@ -150,11 +144,11 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery(
-					"SELECT Fornecedor.id,nome,email,password,telefone,imagem,tipo_usuario,id_endereco,CNPJ,tipo_servico,id_usuario FROM Fornecedor INNER JOIN Usuario on Fornecedor.id_usuario =  Usuario.id");
+					"SELECT Fornecedor.id,nome,email,password,telefone,imagem,data_login,tipo_usuario,id_endereco,CNPJ,tipo_servico,id_usuario FROM Fornecedor INNER JOIN Usuario on Fornecedor.id_usuario =  Usuario.id");
 			while (super.rs.next()) {
 				Fornecedor u = new Fornecedor(super.rs.getInt("id"), super.rs.getString("nome"),
 						super.rs.getString("email"), super.rs.getString("password"), super.rs.getString("telefone"),
-						super.rs.getString("imagem"), super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"),
+						super.rs.getString("imagem"),super.rs.getDate("data_login"), super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"),
 						super.rs.getString("CNPJ"), super.rs.getInt("tipo_servico"), super.rs.getInt("id_usuario"));
 				Fornecedors.add(u);
 			}

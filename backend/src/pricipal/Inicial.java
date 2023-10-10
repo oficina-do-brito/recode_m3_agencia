@@ -13,18 +13,20 @@ import models.OrigemDestino;
 import models.PacoteViagem;
 import models.Passagem;
 import models.Usuario;
+import pricipal.utils.Colors;
+import pricipal.utils.Utils;
 
 public class Inicial {
 
 	public static void main(String[] args) throws IOException {
+		Utils uts = new Utils();
 		Connection conexao = Db.getConnection();
 		System.out.println("Espere um momento Major, criando as tabelas ...");
 		Db.criarDatabase();
-		System.out.printf("Se não existiam foram criadas %n %n");
+		System.out.printf(Utils.escreverColorido(Colors.AZUL,"Se não existiam foram criadas") + " %n %n");
 
 		Scanner sc = new Scanner(System.in);
 		int opcao, opcaoTwo, idUser;
-		Utils uts = new Utils();
 
 		Administrador a = null;Cliente c = null;Fornecedor f = null;Usuario u = null;
 		PacoteViagem pv = null;Hospedagem h = null;Passagem ps = null;OrigemDestino od = null;
@@ -35,7 +37,7 @@ public class Inicial {
 			System.out.printf("%n %n");
 			switch (opcao) {
 			case 0:
-				System.out.println("Você ira sair... espere fechando programa...");
+				System.out.println("Fechando programa...");
 				break;
 			case 1: // Menu Usuario
 				u = new Usuario();
@@ -234,7 +236,7 @@ public class Inicial {
 		} while (opcao != 0);
 		sc.close();
 		Db.closeConnection(conexao);
-		System.out.println("Fim !");
+		System.out.println(Utils.escreverColorido(Colors.YELLOW,"Até mais"));
 	}
 
 }

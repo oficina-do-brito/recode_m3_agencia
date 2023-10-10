@@ -28,18 +28,14 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.pst.setString(3, obj.getDescricao());
 			super.pst.setInt(4, obj.getTipo());
 			super.pst.setInt(5, obj.getIdEndereco());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			if (linhasAlteradas > 0) {
-				System.out.printf("Inserido %d OrigemDestino no banco, ... %n %n", linhasAlteradas);
+			int l = super.pst.executeUpdate();
+			if (l > 0) {
 				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}
 				return id;
-			} else {
-				System.out.println("nenhuma OrigemDestino foi criado");
 			}
 
 		} catch (SQLException e) {
@@ -61,10 +57,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.pst.setString(2, obj.getDescricao());
 			super.pst.setInt(3, obj.getTipo());
 			super.pst.setInt(4, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("OrigemDestino alterado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -79,10 +72,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM OrigemDestino WHERE OrigemDestino.id =?");
 			super.pst.setInt(1, obj.getId());
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("OrigemDestino deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -97,10 +87,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement("DELETE FROM OrigemDestino WHERE OrigemDestino.id =?");
 			pst.setInt(1, id);
-
-			int linhasAlteradas = super.pst.executeUpdate();
-			System.out.printf("OrigemDestino deletado com sucesso %d linhas afetadas", linhasAlteradas);
-
+			super.pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
@@ -118,7 +105,6 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.rs = super.st.executeQuery("SELECT FROM OrigemDestino WHERE OrigemDestino.id =?");
 			super.rs.first();
 			//id ,nome,imagem ,descricao ,tipo ,id_endereco
-
 			u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("id_endereco"));
 			return u;
 

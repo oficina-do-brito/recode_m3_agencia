@@ -29,7 +29,7 @@ public class DbTable {
 
 	public static String getDDLCreateUsuario() {
 		return "CREATE TABLE IF NOT EXISTS Usuario (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "nome VARCHAR(150),"
-				+ "email VARCHAR(150)," + "password VARCHAR(50)," + "telefone VARCHAR(50)," + "imagem VARCHAR(500),"
+				+ "email VARCHAR(150)," + "password VARCHAR(50)," + "telefone VARCHAR(50)," + "imagem Text,"
 				+ "tipo_usuario INTEGER," + "data_login DATETIME," + "id_endereco INTEGER" + ");";
 	}
 

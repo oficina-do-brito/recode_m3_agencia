@@ -11,9 +11,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/conceitual.jpg">Modelo Conceitual</a> •
-  <a href="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/logico.jpg">Modelo Logico</a> •
-  <a href="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/arquitetura.png">Roadmap da aplicação</a> •
+  <a href="#Modelo_Conceitual">Modelo Conceitual</a> •
+  <a href="#Modelo_Logico">Modelo Logico</a> •
+  <a href="#Diagrama_de_Classe">Roadmap da aplicação</a> •
   <a href="#Versões">Versões mais antigas</a> •
   <a href="#Tecnologias_usadas">Tecnologias Usadas</a> •
    <a href="#Rodando_aplicação">Rodando aplicação</a> •
@@ -27,6 +27,18 @@
   - Versão 2.1
   - Versão 2.2
 - Versão 3
+## Modelo_Conceitual
+
+<img src="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/conceitual.jpg" />
+
+## Modelo_Logico
+
+<img src="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/logico.jpg" />
+
+## Diagrama_de_Classe
+
+<img src="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/diagrama_class.png" />
+
 
 ## Tecnologias_usadas
 

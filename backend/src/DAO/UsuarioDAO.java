@@ -72,7 +72,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 	public void delete(Usuario obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.id =? ON CASCADE");
 			super.pst.setInt(1, obj.getId());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {

@@ -178,7 +178,23 @@ public class Usuario implements ICRUD {
 				+ telefone + ", imagem=" + imagem + ", dataLogin=" + dataLogin + ", tipoUsuario=" + tipoUsuario
 				+ ", idEndereco=" + idEndereco + ".";
 	}
-
+	
+	public void buscarPorID(Scanner sc) {
+		int id =0;
+		System.out.println("Informe o id do usuario que vc quer buscar:");
+		id = sc.nextInt();
+		Usuario clone = this.usuarioDAO.findById(id);
+		this.id = clone.id;
+		this.nome = clone.nome;
+		this.email = clone.email;
+		this.password = clone.password;
+		this.telefone = clone.telefone;
+		this.imagem = clone.imagem;
+		this.dataLogin = clone.dataLogin;
+		this.tipoUsuario = clone.tipoUsuario;
+		this.idEndereco = clone.idEndereco;
+		System.out.println(clone.toString());
+	}
 	@Override
 	public void create() {
 		this.endereco.create();
@@ -213,62 +229,66 @@ public class Usuario implements ICRUD {
 		String nome, email, senha, telefone, imagem, cep, estado, cidade, bairro, rua;
 		int tipoUsuario, numero;
 		do {
-			System.out.print("Digite seu nome: ");
-			nome = sc.next();
+			System.out.println("Digite seu nome abaixo:");
+			sc.nextLine();
+			nome = sc.nextLine();
 		} while (nome.length() > 150);
 
 		do {
-			System.out.print("Digite seu email: ");
+			System.out.println("Digite seu email abaixo: ");
 			email = sc.next();
 		} while (email.length() > 150);
 
 		do {
-			System.out.print("Digite seu senha: ");
+			System.out.println("Digite sua senha: ");
 			senha = sc.next();
 		} while (senha.length() > 50);
 
 		do {
-			System.out.print("Digite seu telefone: ");
+			System.out.println("Digite seu telefone: ");
 			telefone = sc.next();
 		} while (telefone.length() > 50);
 
 		do {
-			System.out.print("Digite o endereço de uma imagem  sua: ");
+			System.out.println("Digite o endereço de uma imagem  sua: ");
 			imagem = sc.next();
 		} while (imagem.length() > 600);
 
 		do {
-			System.out.print(
+			System.out.println(
 					"Digite o tipo de usuario que  corresponde a você 1-Administrador 2-Fornecedor 3-Cliente : ");
 			tipoUsuario = sc.nextInt();
 		} while (!Verificadora.verificaTipoUsuarioExists(tipoUsuario));
 
 		do {
-			System.out.print("Informe o cep da sua cidade  onde reside: ");
+			System.out.println("Informe o cep da sua cidade  onde reside: ");
 			cep = sc.next();
 		} while (cep.length() > 150);
 
 		do {
-			System.out.print("Informe o seu estado onde reside : ");
+			System.out.println("Informe o seu estado onde reside : ");
 			estado = sc.next();
 		} while (!Verificadora.verificaEstado(estado));
 
 		do {
-			System.out.print("Informe cidade : ");
-			cidade = sc.next();
+			System.out.println("Informe cidade : ");
+			sc.nextLine();
+			cidade = sc.nextLine();
 		} while (cidade.length() > 150);
 
 		do {
-			System.out.print("Informe o bairro da sua cidade : ");
-			bairro = sc.next();
+			System.out.println("Informe o bairro da sua cidade : ");
+			bairro = sc.nextLine();
+			sc.nextLine();
 		} while (bairro.length() > 150);
 
 		do {
-			System.out.print("Informe a rua da sua cidade onde reside: ");
-			rua = sc.next();
+			System.out.println("Informe a rua da sua cidade onde reside: ");
+			rua = sc.nextLine();
+			sc.nextLine();
 		} while (rua.length() > 150);
 
-		System.out.print("Informe o numero da sua casa: ");
+		System.out.println("Informe o numero da sua casa: ");
 		numero = sc.nextInt();
 		return new Usuario(nome, email, senha, telefone, imagem, tipoUsuario, cep, estado, cidade, bairro, rua, numero);
 	}

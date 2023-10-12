@@ -6,13 +6,14 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import DAO.FornecedorDAO;
+import models.utils.Verificadora;
 
 public class Fornecedor extends Usuario {
 	private Integer id;
 	private String CNPJ;
 	private Integer tipoServico;
 	private Integer idUsuario;
-	
+
 	private ArrayList<Passagem> passagens = new ArrayList<Passagem>();
 	private FornecedorDAO fornecedorDAO = new FornecedorDAO();
 
@@ -27,11 +28,12 @@ public class Fornecedor extends Usuario {
 		this.tipoServico = tipoServico;
 		this.idUsuario = idUsuario;
 	}
-	
-	public Fornecedor(Integer id, String nome, String email, String password, String telefone, String imagem, Date dataLogin,
-			Integer tipoUsuario, Integer idEndereco, String CNPJ, Integer tipoServico,Integer idUsuario) {
-		super(idUsuario,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,idEndereco);
-		
+
+	public Fornecedor(Integer id, String nome, String email, String password, String telefone, String imagem,
+			Date dataLogin, Integer tipoUsuario, Integer idEndereco, String CNPJ, Integer tipoServico,
+			Integer idUsuario) {
+		super(idUsuario, nome, email, password, telefone, imagem, dataLogin, tipoUsuario, idEndereco);
+
 		this.id = id;
 		this.CNPJ = CNPJ;
 		this.tipoServico = tipoServico;
@@ -50,12 +52,14 @@ public class Fornecedor extends Usuario {
 		CNPJ = cNPJ;
 		this.tipoServico = tipoServico;
 	}
-	
+
 	public void fornecer(Passagem ps) {
 		ps.setIdFornecedor(this.id);
 		ps.create();
 	}
+
 	public void fornecer(Hospedagem h) {
+		h.setIdFornecedor(this.id);
 		h.create();
 	}
 
@@ -120,15 +124,18 @@ public class Fornecedor extends Usuario {
 		return "é um Fornecedor com -> CNPJ=" + CNPJ + ", tipoServico=" + tipoServico + ", idUsuario=" + idUsuario
 				+ ", Tambem," + super.toString() + " ";
 	}
-
 	public static Fornecedor preencherFornecedor(Scanner sc) {
 		String CNPJ;
 		Integer tipoServico;
-		System.out.print("Digite seu o seu CNPJ: ");
-		CNPJ = sc.next();
-		System.out.print(
-				"Digite seu tipo de Serviço que você oferece 1- para Fornecimento dePassagens  2- Para Hospedagem : ");
-		tipoServico = sc.nextInt();
+		do {
+			System.out.print("Digite seu o seu CNPJ: ");
+			CNPJ = sc.next();
+		} while (CNPJ.length() > 50);
+
+		do {
+			System.out.print("Tipo de Serviço que você oferece 1-Fornecimento deP assagens  2- Para Hospedagem : ");
+			tipoServico = sc.nextInt();
+		} while (!Verificadora.verificaTipoServicoExists(tipoServico));
 
 		return new Fornecedor(CNPJ, tipoServico);
 	}
@@ -140,7 +147,9 @@ public class Fornecedor extends Usuario {
 
 	@Override
 	public void update() {
-		this.fornecedorDAO.update(new Fornecedor(this.id, this.CNPJ, this.tipoServico, this.idUsuario));
+		if (this.id != null) {
+			this.fornecedorDAO.update(new Fornecedor(this.id, this.CNPJ, this.tipoServico, this.idUsuario));
+		}
 
 	}
 

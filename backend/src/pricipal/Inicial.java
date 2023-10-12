@@ -23,7 +23,7 @@ public class Inicial {
 		Connection conexao = Db.getConnection();
 		System.out.println("Espere um momento Major, criando as tabelas ...");
 		Db.criarDatabase();
-		System.out.printf(Utils.escreverColorido(Colors.AZUL,"Se não existiam foram criadas") + " %n %n");
+		System.out.printf(Utils.escreverColorido(Colors.AZUL, "Se não existiam foram criadas") + " %n %n");
 
 		Scanner sc = new Scanner(System.in);
 		int opcao, opcaoTwo, idUser;
@@ -55,7 +55,6 @@ public class Inicial {
 
 						if (u.getTipoUsuario() == 1) {
 							a = new Administrador(0, u.getId());
-							// a.setIdUsuario(u.getId());
 							a.create();
 						}
 
@@ -85,6 +84,9 @@ public class Inicial {
 						break;
 					case 4:
 						u.readAll();
+						break;
+					case 5:
+						u.buscarPorID(sc);
 						break;
 					default:
 						System.out.println("opção invalida");
@@ -155,9 +157,11 @@ public class Inicial {
 						break;
 					case 2:
 						ps = Passagem.preencherPassagem(sc);
+						ps.setIdFornecedor(f.getId());
 						f.fornecer(ps);
 						break;
-					case 3: // fornecer hospedagem, cria-se uma hospedagem,pega-se um endereço para destino coloca na hospedagem, toda hospedagem é um destino para o cliente
+					case 3: // fornecer hospedagem, cria-se uma hospedagem,pega-se um endereço para destino
+							// coloca na hospedagem, toda hospedagem é um destino para o cliente
 						int idEndereco;
 						h = Hospedagem.preencherHospedagem(sc);
 						h.setIdFornecedor(f.getId());
@@ -199,7 +203,6 @@ public class Inicial {
 					default:
 						System.out.println("opção invalida");
 					}
-
 				} while (opcaoTwo != 0);
 				break;
 			case 5: // Menu Admin
@@ -214,7 +217,7 @@ public class Inicial {
 						break;
 					case 1:
 						int n;
-						System.out.print("Digite o  numeroViagemRevisadas: ");
+						System.out.print("Digite o  numero ViagemRevisadas: ");
 						n = sc.nextInt();
 						a.setNumeroViagemRevisadas(n);
 						break;
@@ -236,7 +239,6 @@ public class Inicial {
 		} while (opcao != 0);
 		sc.close();
 		Db.closeConnection(conexao);
-		System.out.println(Utils.escreverColorido(Colors.YELLOW,"Até mais"));
+		System.out.println(Utils.escreverColorido(Colors.YELLOW, "Até mais"));
 	}
-
 }

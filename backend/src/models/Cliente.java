@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import DAO.ClienteDAO;
+import pricipal.utils.Colors;
+import pricipal.utils.Utils;
 
 public class Cliente extends Usuario {
 	private Integer id;
@@ -119,8 +121,8 @@ public class Cliente extends Usuario {
 	@Override
 	public String toString() {
 		return "é um Cliente com -> id=" + id + ", RG=" + RG + ", CPF=" + CPF + ", numeroViagens=" + numeroViagens
-				+ ", cartaoCredito=" + cartaoCredito + ", idUsuario=" + idUsuario + ", Tambem,"
-				+ super.toString() + " ";
+				+ ", cartaoCredito=" + cartaoCredito + ", idUsuario=" + idUsuario + ", Tambem," + super.toString()
+				+ " ";
 	}
 
 	@Override
@@ -131,8 +133,12 @@ public class Cliente extends Usuario {
 
 	@Override
 	public void update() {
-		this.clienteDAO.update(
-				new Cliente(this.id, this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario));
+		if (this.id != null) {
+			this.clienteDAO.update(
+					new Cliente(this.id, this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario));
+		}else {
+			System.out.println(Utils.escreverColorido(Colors.VERMELHO,"impossivel atualizar esse Cliente..."));
+		}
 	}
 
 	@Override
@@ -140,7 +146,7 @@ public class Cliente extends Usuario {
 		if (this.id != null) {
 			this.clienteDAO.deleteById(this.id);
 		} else {
-			System.out.println("Esse cliente \"Não foi encontrado\", logo não houve deleção.");
+			System.out.println(Utils.escreverColorido(Colors.VERMELHO,"Esse cliente \"Não foi encontrado\", logo não houve deleção."));
 		}
 	}
 
@@ -152,33 +158,35 @@ public class Cliente extends Usuario {
 		}
 	}
 
-	public void adquerirPacote(PacoteViagem pv){
+	public void adquerirPacote(PacoteViagem pv) {
 		this.carrinho.addInPacotes(pv);
-		if(this.carrinho == null){
+		if (this.carrinho == null) {
 			System.out.println("Carrinho vazio");
-		}else{
-			System.out.printf("Adicionado carrinho agora contem %d",this.carrinho.getPacotes().size());
+		} else {
+			System.out.printf("Adicionado carrinho agora contem %d", this.carrinho.getPacotes().size());
 		}
 	}
 
-	public void efetuarPagamentoPacote(){
+	public void efetuarPagamentoPacote() {
 		Scanner scs = new Scanner(System.in);
-		String ids;double valor;
+		String ids;
+		double valor;
 
 		System.out.printf("Informe os id(s) de ambos os pacotes que vc quer pagar separados por /, : ");
 		ids = scs.next();
 		System.out.printf("Informe o valor do pagamento : ");
 		valor = scs.nextDouble();
-		String [] axilar = ids.split(",");
-		int [] idsNumericos = new int[50];
+		String[] axilar = ids.split(",");
+		int[] idsNumericos = new int[50];
 		int i = 0;
 		for (String num : axilar) {
 			idsNumericos[i] = Integer.parseInt(num);
 		}
-		this.numeroViagens += this.carrinho.realizarPagamento(valor,idsNumericos);
+		this.numeroViagens += this.carrinho.realizarPagamento(valor, idsNumericos);
 
 		scs.close();
 	}
+
 	public static Cliente preencherCliente(Scanner sc) {
 		String RG, CPF, cartaoCredito;
 		System.out.print("Digite seu o seu RG: ");

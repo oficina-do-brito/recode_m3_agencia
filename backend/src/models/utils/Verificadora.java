@@ -28,6 +28,12 @@ public class Verificadora {
 		}
 		return false;
 	}
+	public static boolean verificaTipoServicoExists(int tipo) {
+		if(tipo > 0 && tipo < 3){
+			return true;
+		}
+		return false;
+	}
 	
 
 }

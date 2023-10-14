@@ -20,7 +20,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO Hospedagem (nome,imagem,diaria,preco,id_origem_destino,id_fornecedor) VALUES (?,?,?,?,?,?,?)",
+					"INSERT INTO Hospedagem (nome,imagem,diaria,preco,id_origem_destino,idFornecedor) VALUES (?,?,?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getImagem());
@@ -107,7 +107,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			super.rs.first();
 			u = new Hospedagem(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),
 					super.rs.getInt("diaria"), super.rs.getDouble("preco"), super.rs.getInt("id_origem_destino"),
-					super.rs.getInt("id_fornecedor"));
+					super.rs.getInt("idFornecedor"));
 			return u;
 
 		} catch (SQLException e) {
@@ -128,7 +128,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 				Hospedagem u = new Hospedagem(super.rs.getInt("id"), super.rs.getString("nome"),
 						super.rs.getString("imagem"),
 						super.rs.getInt("diaria"), super.rs.getDouble("preco"), super.rs.getInt("id_origem_destino"),
-						super.rs.getInt("id_fornecedor"));
+						super.rs.getInt("idFornecedor"));
 				Hospedagems.add(u);
 			}
 			return Hospedagems;

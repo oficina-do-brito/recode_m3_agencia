@@ -21,7 +21,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO OrigemDestino (nome,email,password,telefone,imagem,data_login,tipo_OrigemDestino,id_endereco) VALUES (?,?,?,?,?,?,?,?)",
+					"INSERT INTO OrigemDestino (nome,email,password,telefone,imagem,dataLogin,tipo_OrigemDestino,idEndereco) VALUES (?,?,?,?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getImagem());
@@ -104,8 +104,8 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT FROM OrigemDestino WHERE OrigemDestino.id =?");
 			super.rs.first();
-			//id ,nome,imagem ,descricao ,tipo ,id_endereco
-			u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("id_endereco"));
+			//id ,nome,imagem ,descricao ,tipo ,idEndereco
+			u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("idEndereco"));
 			return u;
 
 		} catch (SQLException e) {
@@ -123,7 +123,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT * FROM OrigemDestino");
 			while (super.rs.next()) {
-				OrigemDestino u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("id_endereco"));
+				OrigemDestino u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("idEndereco"));
 				OrigemDestinos.add(u);
 			}
 			return OrigemDestinos;

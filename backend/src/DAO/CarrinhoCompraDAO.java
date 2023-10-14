@@ -21,7 +21,7 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO CarrinhoCompra (valor_total ,forma_pagamento ,quant_items ,id_cliente) VALUES (?,?,?,?)",
+					"INSERT INTO CarrinhoCompra (valorTotal ,formaPagamento ,quantItems ,idCliente) VALUES (?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setDouble(1, obj.getValorTotal());
 			super.pst.setInt(2, obj.getFormaPagamento());
@@ -51,7 +51,7 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement(
-					"UPDATE CarrinhoCompra SET  CarrinhoCompra.forma_pagamento=? WHERE CarrinhoCompra.id = ?");
+					"UPDATE CarrinhoCompra SET  CarrinhoCompra.formaPagamento=? WHERE CarrinhoCompra.id = ?");
 			super.pst.setInt(1, obj.getFormaPagamento());
 			super.pst.setInt(2, obj.getId());
 			super.pst.executeUpdate();
@@ -92,7 +92,7 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 		}
 
 	}
-	//id, valor_total ,forma_pagamento ,quant_items ,id_cliente)
+	//id, valorTotal ,formaPagamento ,quantItems ,idCliente)
 	@Override
 	public CarrinhoCompra findById(Integer id) {
 		CarrinhoCompra u = null;
@@ -101,8 +101,8 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT FROM CarrinhoCompra WHERE CarrinhoCompra.id =?");
 			super.rs.first();
-			u = new CarrinhoCompra(super.rs.getInt("id"), super.rs.getDouble("valor_total"), super.rs.getInt("forma_pagamento"),
-					super.rs.getInt("quant_items"), super.rs.getInt("id_cliente"));
+			u = new CarrinhoCompra(super.rs.getInt("id"), super.rs.getDouble("valorTotal"), super.rs.getInt("formaPagamento"),
+					super.rs.getInt("quantItems"), super.rs.getInt("idCliente"));
 			return u;
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
@@ -119,8 +119,8 @@ public class CarrinhoCompraDAO extends PadraoDao implements IGenericDAO<Carrinho
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT * FROM CarrinhoCompra");
 			while (super.rs.next()) {
-				CarrinhoCompra u = new CarrinhoCompra(super.rs.getInt("id"), super.rs.getDouble("valor_total"), super.rs.getInt("forma_pagamento"),
-					super.rs.getInt("quant_items"), super.rs.getInt("id_cliente"));
+				CarrinhoCompra u = new CarrinhoCompra(super.rs.getInt("id"), super.rs.getDouble("valorTotal"), super.rs.getInt("formaPagamento"),
+					super.rs.getInt("quantItems"), super.rs.getInt("idCliente"));
 				usuarios.add(u);
 			}
 			return usuarios;

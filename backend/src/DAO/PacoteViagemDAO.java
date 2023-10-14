@@ -20,7 +20,7 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
         try {
             super.c1 = Db.getConnection();
             super.pst = super.c1.prepareStatement(
-                    "INSERT INTO PacoteViagem (titulo,valor_desconto,preco_total,possui_hospedagem,status,meio_transporte,imagem,prazo_cancelamento,data_viagem,id_origem_destino,id_hospedagem,id_carrinho_compra) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO PacoteViagem (titulo,valorDesconto,precoTotal,possuiHospedagem,status,meioTransporte,imagem,prazoCancelamento,dataViagem,idOrigem_destino,idHospedagem,idCarrinho_compra) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             super.pst.setString(1, obj.getTitulo());
             super.pst.setInt(2, obj.getValorDesconto());
@@ -58,10 +58,10 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
     public void update(PacoteViagem obj) {
         try {
             super.c1 = Db.getConnection();
-            // prazo_cancelamento,data_viagem,id_origem_destino,
+            // prazoCancelamento,dataViagem,idOrigem_destino,
             super.pst = c1.prepareStatement(
-                    "UPDATE PacoteViagem SET  PacoteViagem.titulo=?, PacoteViagem.valor_desconto=?, PacoteViagem.possui_hospedagem=?, PacoteViagem.status=? PacoteViagem.meio_transporte=? PacoteViagem.imagem=? PacoteViagem.prazo_cancelamento"
-                            + "PacoteViagemid_origem_destino=? WHERE PacoteViagem.id = ?");
+                    "UPDATE PacoteViagem SET  PacoteViagem.titulo=?, PacoteViagem.valorDesconto=?, PacoteViagem.possuiHospedagem=?, PacoteViagem.status=? PacoteViagem.meioTransporte=? PacoteViagem.imagem=? PacoteViagem.prazoCancelamento"
+                            + "PacoteViagemidOrigem_destino=? WHERE PacoteViagem.id = ?");
 
             super.pst.setString(1, obj.getTitulo());
             super.pst.setInt(2, obj.getValorDesconto());
@@ -120,17 +120,17 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
             p = new PacoteViagem(
                     super.rs.getInt("id"),
                     super.rs.getString("titulo"),
-                    super.rs.getInt("valor_desconto"),
-                    super.rs.getDouble("preco_total"),
-                    super.rs.getString("possui_hospedagem"),
+                    super.rs.getInt("valorDesconto"),
+                    super.rs.getDouble("precoTotal"),
+                    super.rs.getString("possuiHospedagem"),
                     super.rs.getString("status"),
-                    super.rs.getString("meio_transporte"),
+                    super.rs.getString("meioTransporte"),
                     super.rs.getString("imagem"),
-                    super.rs.getDate("prazo_cancelamento"),
-                    super.rs.getDate("data_viagem"),
-                    super.rs.getInt("id_origem_destino"),
-                    super.rs.getInt("id_hospedagem"),
-                    super.rs.getInt("id_carrinho_compra"));
+                    super.rs.getDate("prazoCancelamento"),
+                    super.rs.getDate("dataViagem"),
+                    super.rs.getInt("idOrigem_destino"),
+                    super.rs.getInt("idHospedagem"),
+                    super.rs.getInt("idCarrinho_compra"));
             return p;
 
         } catch (SQLException e) {
@@ -148,17 +148,17 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
             super.st = c1.createStatement();
             super.rs = super.st.executeQuery("SELECT * FROM PacoteViagem");
             while (super.rs.next()) {
-                // status,meio_transporte,imagem,prazo_cancelamento,data_viagem,id_origem_destino,id_hospedagem,id_carrinho_compra
-                PacoteViagem u = new PacoteViagem(rs.getInt("id"), rs.getString("titulo"), rs.getInt("valor_desconto"),
-                        super.rs.getDouble("preco_total"),
-                        super.rs.getString("possui_hospedagem"), super.rs.getString("status"),
-                        super.rs.getString("meio_transporte"),
+                // status,meioTransporte,imagem,prazoCancelamento,dataViagem,idOrigem_destino,idHospedagem,idCarrinho_compra
+                PacoteViagem u = new PacoteViagem(rs.getInt("id"), rs.getString("titulo"), rs.getInt("valorDesconto"),
+                        super.rs.getDouble("precoTotal"),
+                        super.rs.getString("possuiHospedagem"), super.rs.getString("status"),
+                        super.rs.getString("meioTransporte"),
                         super.rs.getString("imagem"),
-                        super.rs.getDate("prazo_cancelamento"),
-                        super.rs.getDate("data_viagem"),
-                        super.rs.getInt("id_origem_destino"),
-                        super.rs.getInt("id_hospedagem"),
-                        super.rs.getInt("id_carrinho_compra"));
+                        super.rs.getDate("prazoCancelamento"),
+                        super.rs.getDate("dataViagem"),
+                        super.rs.getInt("idOrigem_destino"),
+                        super.rs.getInt("idHospedagem"),
+                        super.rs.getInt("idCarrinho_compra"));
                 PacoteViagems.add(u);
             }
             return PacoteViagems;

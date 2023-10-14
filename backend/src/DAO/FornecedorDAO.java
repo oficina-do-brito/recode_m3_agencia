@@ -20,7 +20,7 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO Fornecedor (CNPJ ,tipo_servico ,id_usuario) VALUES (?,?,?)",
+					"INSERT INTO Fornecedor (CNPJ ,tipoServico ,fkUsuario) VALUES (?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getCNPJ());
 			super.pst.setInt(2, obj.getTipoServico());
@@ -52,7 +52,8 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 	public void update(Fornecedor obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = c1.prepareStatement("UPDATE Fornecedor SET  Fornecedor.tipo_servico=? WHERE Fornecedor.id = ?");
+			super.pst = c1.prepareStatement(
+					"UPDATE Fornecedor SET  Fornecedor.tipoServico=? WHERE Fornecedor.idFornecedor = ?");
 			super.pst.setInt(1, obj.getTipoServico());
 			super.pst.setInt(4, obj.getId());
 
@@ -71,7 +72,7 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 	public void delete(Fornecedor obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Fornecedor WHERE Fornecedor.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Fornecedor WHERE Fornecedor.idFornecedor =?");
 			super.pst.setInt(1, obj.getId());
 
 			int linhasAlteradas = super.pst.executeUpdate();
@@ -89,7 +90,7 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Fornecedor WHERE Fornecedor.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Fornecedor WHERE Fornecedor.idFornecedor =?");
 			pst.setInt(1, id);
 
 			int linhasAlteradas = super.pst.executeUpdate();
@@ -105,36 +106,38 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 
 	@Override
 	public Fornecedor findById(Integer id) {
-		Fornecedor f = null;
+		Fornecedor f = new Fornecedor();
+		String sql="SELECT idFornecedor,nome,email,password,telefone,imagem,tipoUsuario,dataLogin,fkEndereco,CNPJ,tipoServico,fkUsuario,CEP,estado,cidade,bairro,rua,numero FROM Usuario INNER JOIN Fornecedor on Usuario.idUsuario = Fornecedor.fkUsuario INNER JOIN Endereco on Usuario.fkEndereco = Endereco.idEndereco WHERE Fornecedor.idFornecedor = ?";
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement(
-					"SELECT * FROM Usuario JOIN Fornecedor on Usuario.id = Fornecedor.id_usuario JOIN Endereco on Usuario.id_endereco = Endereco.id WHERE Fornecedor.id=?",
-					Statement.RETURN_GENERATED_KEYS);
-			super.pst.setInt(1, id);
-			super.rs = pst.executeQuery();
-			super.rs.first();
-			f = new Fornecedor(rs.getInt("id"), rs.getString("CNPJ"), rs.getInt("tipoServico"),
-					rs.getInt("id_usuario"));
+			super.pst = super.c1.prepareStatement(sql);
+			super.pst.setInt(1,  id.intValue());
+			super.rs = super.pst.executeQuery();
+			while (super.rs.next()) {
+				f.setId(super.rs.getInt("idFornecedor"));
+				f.setCNPJ(super.rs.getString("CNPJ"));
+				f.setTipoServico(super.rs.getInt("tipoServico"));
+				f.setTipoUsuario(super.rs.getInt("fkUsuario"));
+				f.setNome(super.rs.getString("nome"));
+				f.setEmail(super.rs.getString("email"));
+				f.setPassword(super.rs.getString("password"));
+				f.setTelefone(super.rs.getString("telefone"));
+				f.setImagem(super.rs.getString("imagem"));
+				f.setTipoUsuario(super.rs.getInt("tipoUsuario"));
+				f.setDataLogin(super.rs.getDate("dataLogin"));
+				f.setIdEndereco(super.rs.getInt("fkEndereco"));
 
-			f.setNome(super.rs.getString("nome"));
-			f.setEmail(super.rs.getString("email"));
-			f.setPassword(super.rs.getString("password"));
-			f.setTelefone(super.rs.getString("telefone"));
-			f.setImagem(super.rs.getString("imagem"));
-			f.setTipoUsuario(super.rs.getInt("tipo_usuario"));
-			f.setIdEndereco(super.rs.getInt("id_endereco"));
-
-			f.setEndereco(super.rs.getInt("id"), super.rs.getString("CEP"), super.rs.getString("estado"),
-					super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
-					super.rs.getInt("numero"));
-			return f;
+				f.setEndereco(super.rs.getInt("fkEndereco"), super.rs.getString("CEP"), super.rs.getString("estado"),
+						super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
+						super.rs.getInt("numero"));
+			}
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
 			Db.closePreparedStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
+		return f;
 	}
 
 	@Override
@@ -144,12 +147,13 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery(
-					"SELECT Fornecedor.id,nome,email,password,telefone,imagem,data_login,tipo_usuario,id_endereco,CNPJ,tipo_servico,id_usuario FROM Fornecedor INNER JOIN Usuario on Fornecedor.id_usuario =  Usuario.id");
+					"SELECT id_fornecedor,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,fkEndereco,CNPJ,tipoServico,fkUsuario FROM Fornecedor INNER INNER JOIN Usuario on Fornecedor.fkUsuario =  Usuario.idUsuario");
 			while (super.rs.next()) {
-				Fornecedor u = new Fornecedor(super.rs.getInt("id"), super.rs.getString("nome"),
+				Fornecedor u = new Fornecedor(super.rs.getInt("idFornecedor"), super.rs.getString("nome"),
 						super.rs.getString("email"), super.rs.getString("password"), super.rs.getString("telefone"),
-						super.rs.getString("imagem"),super.rs.getDate("data_login"), super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"),
-						super.rs.getString("CNPJ"), super.rs.getInt("tipo_servico"), super.rs.getInt("id_usuario"));
+						super.rs.getString("imagem"), super.rs.getDate("dataLogin"), super.rs.getInt("tipoUsuario"),
+						super.rs.getInt("fkEndereco"), super.rs.getString("CNPJ"), super.rs.getInt("tipoServico"),
+						super.rs.getInt("fkUsuario"));
 				Fornecedors.add(u);
 			}
 			return Fornecedors;

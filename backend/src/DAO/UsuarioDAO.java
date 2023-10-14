@@ -21,7 +21,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO Usuario (nome,email,password,telefone,imagem,data_login,tipo_usuario,id_endereco) VALUES (?,?,?,?,?,?,?,?)",
+					"INSERT INTO Usuario (nome,email,password,telefone,imagem,dataLogin,tipoUsuario,fkEndereco) VALUES (?,?,?,?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getEmail());
@@ -54,7 +54,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement(
-					"UPDATE Usuario SET  Usuario.nome=?, Usuario.password=?, Usuario.imagem=? WHERE Usuario.id = ?");
+					"UPDATE Usuario SET  Usuario.nome=?, Usuario.password=?, Usuario.imagem=? WHERE Usuario.idUsuario = ?");
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getPassword());
 			super.pst.setString(3, obj.getImagem());
@@ -72,7 +72,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 	public void delete(Usuario obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.id =? ON CASCADE");
+			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.idUsuario =? ON CASCADE");
 			super.pst.setInt(1, obj.getId());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -87,7 +87,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Usuario WHERE Usuario.idUsuario =?");
 			pst.setInt(1, id);
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -102,12 +102,21 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		Usuario u = null;
 		try {
 			super.c1 = Db.getConnection();
-			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT * FROM Usuario WHERE Usuario.id =?");
-			super.rs.first();
-			u = new Usuario(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("email"),
-					super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),super.rs.getDate("data_login"),
-					super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"));
+			super.pst = super.c1.prepareStatement("SELECT idUsuario,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,fkEndereco FROM Usuario WHERE Usuario.idUsuario=?");
+			super.pst.setInt(1, id);
+			super.rs = super.pst.executeQuery();
+			while(super.rs.next()) {
+				u = new Usuario(
+					super.rs.getInt("idUsuario"),
+					super.rs.getString("nome"),
+					super.rs.getString("email"),
+					super.rs.getString("password"),
+					super.rs.getString("telefone"),
+					super.rs.getString("imagem"),
+					super.rs.getDate("dataLogin"),
+					super.rs.getInt("tipoUsuario"),
+					super.rs.getInt("fkEndereco"));
+			}
 			return u;
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
@@ -123,14 +132,39 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		try {
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT id,nome,email,password,telefone,imagem,data_login,tipo_usuario,id_endereco FROM Usuario");
+			super.rs = super.st.executeQuery(
+					"SELECT idUsuario,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,fkEndereco FROM Usuario");
 			while (super.rs.next()) {
-				Usuario u = new Usuario(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("email"),
-				super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),super.rs.getDate("data_login"),
-				super.rs.getInt("tipo_usuario"), super.rs.getInt("id_endereco"));
+				Usuario u = new Usuario(super.rs.getInt("idUsuario"), super.rs.getString("nome"), super.rs.getString("email"),
+						super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),
+						super.rs.getDate("dataLogin"), super.rs.getInt("tipoUsuario"),
+						super.rs.getInt("fkEndereco"));
 				usuarios.add(u);
 			}
 			return usuarios;
+		} catch (SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		} finally {
+			Db.closeStatement(super.st);
+			Db.closeResultSet(super.rs);
+		}
+	}
+
+	public Usuario findByEmailAndPassoword(String email, String password) {
+		Usuario u = null;
+		try {
+			super.c1 = Db.getConnection();
+			super.pst = super.c1.prepareStatement("SELECT * FROM Usuario WHERE Usuario.email=? AND Usuario.password=?");
+			super.pst.setString(1, email);
+			super.pst.setString(2, password);
+			super.rs = super.pst.executeQuery();
+			if (super.rs.next()) {
+				u = new Usuario(super.rs.getInt("idUsuario"), super.rs.getString("nome"), super.rs.getString("email"),
+						super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),
+						super.rs.getDate("dataLogin"), super.rs.getInt("tipoUsuario"),
+						super.rs.getInt("fkEndereco"));
+			}
+			return u;
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {

@@ -1,106 +1,69 @@
 package db;
 
 public class DbTable {
-	public static String getDDLCreateFornecedor() {
-		return "CREATE TABLE IF NOT EXISTS Fornecedor (" + "id INTEGER AUTO_INCREMENT PRIMARY KEY," + "CNPJ VARCHAR(14),"
-				+ "tipo_servico INTEGER," + "id_usuario INTEGER," + "FOREIGN KEY(id_usuario) REFERENCES Usuario (id)"
-				+ ");";
-	}
-
-	public static String getDDLCreateCliente() {
-		return "CREATE TABLE IF NOT EXISTS Cliente (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "RG VARCHAR(7),"
-				+ "CPF VARCHAR(11)," + "numero_viagens INTEGER," + "cartao_credito VARCHAR(16)," + "id_usuario INTEGER"
-				+ ");";
-	}
-
-	public static String getDDLCreateHospedagem() {
-		return " CREATE TABLE IF NOT EXISTS Hospedagem (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "nome VARCHAR(100),"
-				+ "imagem VARCHAR(500)," + "diaria INTEGER," + "preco DECIMAL(2)," + "id_origem_destino INTEGER,"
-				+ "id_fornecedor INTEGER );";
-	}
-
-	public static String getDDLCreatePacoteViagem() {
-		return "CREATE TABLE IF NOT EXISTS PacoteViagem (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "titulo VARCHAR(150),"
-				+ "valor_desconto INTEGER," + "preco_total DECIMAL(2)," + "possui_hospedagem VARCHAR(50),"
-				+ "status VARCHAR(20)," + "meio_transporte VARCHAR(50)," + "imagem VARCHAR(150),"
-				+ "prazo_cancelamento DATETIME," + "data_viagem DATETIME," + "id_origem_destino INTEGER,"
-				+ "id_hospedagem INTEGER," + "id_carrinho_compra INTEGER" + ");";
-	}
-
 	public static String getDDLCreateUsuario() {
-		return "CREATE TABLE IF NOT EXISTS Usuario (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "nome VARCHAR(150),"
-				+ "email VARCHAR(150)," + "password VARCHAR(50)," + "telefone VARCHAR(50)," + "imagem Text,"
-				+ "tipo_usuario INTEGER," + "data_login DATETIME," + "id_endereco INTEGER" + ");";
+		return "CREATE TABLE IF NOT EXISTS Usuario (idUsuario INTEGER AUTO_INCREMENT PRIMARY KEY,nome VARCHAR(150),email VARCHAR(150),password VARCHAR(50),telefone VARCHAR(50),tipoUsuario INTEGER,imagem VARCHAR(500),dataLogin DATETIME,fkEndereco INTEGER);";
+	}
+	public static String getDDLCreateEndereco() {
+		return "CREATE TABLE IF NOT EXISTS Endereco (idEndereco INTEGER AUTO_INCREMENT PRIMARY KEY,CEP VARCHAR(9),estado VARCHAR(2),cidade VARCHAR(150),bairro VARCHAR(150),rua VARCHAR(150),numero INTEGER);";
 	}
 
-	public static String getDDLCreateEndereco() {
-		return "CREATE TABLE IF NOT EXISTS Endereco (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "CEP VARCHAR(9),"
-				+ "estado VARCHAR(2)," + "cidade VARCHAR(150)," + "bairro VARCHAR(150)," + "rua VARCHAR(150),"
-				+ "numero INTEGER" + ");";
+	public static String getDDLCreateFornecedor() {
+		return "CREATE TABLE IF NOT EXISTS Fornecedor (idFornecedor INTEGER AUTO_INCREMENT PRIMARY KEY,CNPJ VARCHAR(14),tipoServico INTEGER,fkUsuario INTEGER,FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario));";
 	}
 
 	public static String getDDLCreateAdministrador() {
-		return "CREATE TABLE IF NOT EXISTS Administrador (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY,"
-				+ "numero_viagem_revisadas INTEGER," + "id_usuario INTEGER,"
-				+ "FOREIGN KEY(id_usuario) REFERENCES Usuario (id));";
+		return "CREATE TABLE IF NOT EXISTS Administrador (idAdministrador INTEGER AUTO_INCREMENT PRIMARY KEY,nViagensRevisadas INTEGER,fkUsuario INTEGER,FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario));";
 	}
 
-	public static String getDDLCreateRevisa() {
-		return "CREATE TABLE IF NOT EXISTS revisa (" + "id_administrador INTEGER," + "id_pacote_viagem INTEGER,"
-				+ "FOREIGN KEY(id_administrador) REFERENCES Administrador (id),"
-				+ "FOREIGN KEY(id_pacote_viagem) REFERENCES PacoteViagem (id));";
-
+	public static String getDDLCreateCliente() {
+		return "CREATE TABLE IF NOT EXISTS Cliente (idCliente INTEGER AUTO_INCREMENT PRIMARY KEY,RG VARCHAR(7),CPF VARCHAR(11),numeroViagens INTEGER,cartaoCredito VARCHAR(16),fkUsuario INTEGER,FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario));";
+	}
+	public static String getDDLCreateCarrinhoCompra() {
+		return "CREATE TABLE IF NOT EXISTS CarrinhoCompra (idCarrinho INTEGER AUTO_INCREMENT PRIMARY KEY,valorTotal DECIMAL(2),formaPagamento INTEGER,quantItems INTEGER,fkCliente INTEGER,FOREIGN KEY(fkCliente) REFERENCES Cliente (idCliente));";
 	}
 
-	public static String getDDLCreateOrigemDestino() {
-		return "CREATE TABLE IF NOT EXISTS OrigemDestino (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "nome VARCHAR(150),"
-				+ "imagem VARCHAR(500)," + "descricao VARCHAR(500)," + "tipo INTEGER," + "id_endereco INTEGER,"
-				+ "FOREIGN KEY(id_endereco) REFERENCES Endereco (id));";
+	public static String getDDLCreateHospedagem() {
+		return "CREATE TABLE IF NOT EXISTS Hospedagem (idHospedagem INTEGER AUTO_INCREMENT PRIMARY KEY,nome VARCHAR(10),imagem VARCHAR(10),diaria VARCHAR(10),preco DECIMAL(2),fkOrigem INTEGER,fkFornecedor INTEGER,FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor));";
 	}
 
 	public static String getDDLCreatePassagem() {
-		return "CREATE TABLE IF NOT EXISTS Passagem (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "titulo VARCHAR(150),"
-				+ "preco DECIMAL(2)," + "tipo INTEGER," + "id_fornecedor INTEGER," + "id_pacote_viagem INTEGER,"
-				+ "FOREIGN KEY(id_fornecedor) REFERENCES Fornecedor (id),"
-				+ "FOREIGN KEY(id_pacote_viagem) REFERENCES PacoteViagem (id)" + ");";
+		return "CREATE TABLE IF NOT EXISTS Passagem (idPassagem INTEGER AUTO_INCREMENT PRIMARY KEY,titulo VARCHAR(150),preco DECIMAL(2),tipo INTEGER,fkFornecedor INTEGER,fkPacote INTEGER,FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor));";
 	}
 
-	public static String getDDLCreateCarrinhoCompra() {
-		return "CREATE TABLE IF NOT EXISTS CarrinhoCompra (" + "id INTEGER  AUTO_INCREMENT PRIMARY KEY," + "valor_total DECIMAL(2),"
-				+ "forma_pagamento INTEGER," + "quant_items INTEGER," + "id_cliente INTEGER,"
-				+ "FOREIGN KEY(id_cliente) REFERENCES Cliente (id)" + ");";
+	public static String getDDLCreatePacoteViagem() {
+		return "CREATE TABLE IF NOT EXISTS PacoteViagem (idPacote INTEGER AUTO_INCREMENT PRIMARY KEY,titulo VARCHAR(150),valorDesconto INTEGER,precoTotal DECIMAL(2),possuiHospedagem VARCHAR(50),status VARCHAR(20),meioTransporte VARCHAR(50),imagem VARCHAR(150),prazoCancelamento DATETIME,dataViagem DATETIME,fkOrigem INTEGER,fkHospedagem INTEGER,fkCarrinho INTEGER,FOREIGN KEY(fkHospedagem) REFERENCES Hospedagem (idHospedagem),FOREIGN KEY(fkCarrinho) REFERENCES CarrinhoCompra (idCarrinho));";
+	}
+	
+	public static String getDDLCreateOrigemDestino() {
+		return "CREATE TABLE IF NOT EXISTS OrigemDestino (idOrigem INTEGER AUTO_INCREMENT PRIMARY KEY,nome VARCHAR(150),imagem VARCHAR(500),descricao VARCHAR(500),tipo INTEGER,fkEndereco INTEGER,FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco));";
+	}
+	
+	public static String getDDLCreateRevisa() {
+		return "CREATE TABLE IF NOT EXISTS revisa (fkAdministrador INTEGER,fkPacote INTEGER,FOREIGN KEY(fkAdministrador) REFERENCES Administrador (idAdministrador),FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote));";
+
+	}
+	/**
+	 *  ALTER TABLE Usuario ADD FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco);
+		ALTER TABLE Hospedagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);
+		ALTER TABLE Passagem ADD FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote);
+		ALTER TABLE PacoteViagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);
+	 */
+	
+	public static String getDDLSetUsuarioFkEndereco() {
+		return "ALTER TABLE Usuario ADD FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco);";
 	}
 
-	public static String getDDLSetFornecedorFkUsuario() {
-		return "ALTER TABLE Fornecedor ADD FOREIGN KEY(id_usuario) REFERENCES Usuario (id);";
+	public static String getDDLSetHospedagemFkOrigemDestino() {
+		return "ALTER TABLE Hospedagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);";
 	}
 
-	public static String getDDLSetClienteFkUsuario() {
-		return "ALTER TABLE Cliente ADD FOREIGN KEY(id_usuario) REFERENCES Usuario (id);";
-	}
-
-	public static String getDDLSetAdministradorFkUsuario() {
-		return "ALTER TABLE Administrador ADD FOREIGN KEY(id_usuario) REFERENCES Usuario (id);";
+	public static String getDDLSetPassagemFkPacoteViagem() {
+		return "ALTER TABLE Passagem ADD FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote);";
 	}
 
 	public static String getDDLSetPacoteViagemFkOrigemDestino() {
-		return "ALTER TABLE PacoteViagem ADD FOREIGN KEY(id_origem_destino) REFERENCES OrigemDestino (id);";
-	}
-
-	public static String getDDLSetPacoteViagemFkHospedagem() {
-		return "ALTER TABLE PacoteViagem ADD FOREIGN KEY(id_hospedagem) REFERENCES Hospedagem (id);";
-	}
-
-	public static String getDDLSetPacoteViagemFkCarrinhoCompra() {
-		return "ALTER TABLE PacoteViagem ADD FOREIGN KEY(id_carrinho_compra) REFERENCES CarrinhoCompra (id);";
-	}
-
-	public static String getDDLSetOrigemDestinoFkEndereco() {
-		return "ALTER TABLE OrigemDestino ADD FOREIGN KEY(id_endereco) REFERENCES Endereco (id);";
-	}
-
-	public static String getDDLSetUsuarioFkEndereco() {
-		return "ALTER TABLE Usuario ADD FOREIGN KEY(id_endereco) REFERENCES Endereco (id);";
+		return "ALTER TABLE PacoteViagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);";
 	}
 
 }

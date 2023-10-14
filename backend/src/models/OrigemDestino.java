@@ -13,6 +13,8 @@ public class OrigemDestino implements ICRUD {
 	private Integer tipo;
 	private Integer idEndereco;
 
+	private Endereco endereco = new Endereco();
+
 	public OrigemDestino(Integer id, String nome, String imagem, String descricao, Integer tipo, Integer idEndereco) {
 		this.id = id;
 		this.nome = nome;

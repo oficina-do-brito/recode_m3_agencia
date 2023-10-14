@@ -3,9 +3,13 @@ package pricipal.utils;
 public class Utils {
 	public void exibirMenuPrincipal() {
 		System.out.println("Escolha [1] para acessar menu usuario: ");
-		System.out.println("Escolha [2] para acessar menu cliente: ");
-		System.out.println("Escolha [3] para acessar menu fornecedor: ");
-		System.out.println("Escolha [4] para acessar menu de Pacotes de Viagens: ");
+
+		System.out.println("Escolha [2] Logar  no sistema");
+
+		// System.out.println("Escolha [2] para acessar menu cliente: ");
+		// System.out.println("Escolha [3] para acessar menu fornecedor: ");
+		// System.out.println("Escolha [4] para acessar menu de Pacotes de Viagens: ");
+		// System.out.println("Escolha [5] para acessar menu de Administrador: ");
 		System.out.println("Escolha [0] para sair. ");
 		System.out.print("Eai major, qual opção você escolheu? ");
 	}
@@ -14,9 +18,7 @@ public class Utils {
 		System.out.printf("%n");
 		System.out.println("[1] para cadastrar usuario");
 		System.out.println("[2] para Atualizar usuario");
-		System.out.println("[3] para deletar usuario");
-		System.out.println("[4] para ver todos os usuarios");
-		System.out.println("[5] para ver um usuario especifico");
+		
 		System.out.println("[0] para voltar ao menu principal...");
 		System.out.print("Eai major, qual opção você escolheu? ");
 	}
@@ -40,6 +42,19 @@ public class Utils {
 		System.out.println("[4] para deletar forenecor");
 		System.out.println("[5 para mostrar todos os fornecedores");
 		System.out.println("[0] para voltar ao menu principal.");
+		System.out.print("Eai major, qual opção você escolheu? ");
+	}
+	
+	public void exibirMenuAdmin() {
+		System.out.printf("%n");
+		System.out.println("[1] para atualizar Administrador");
+		System.out.println("[2] para deletar Administrador");
+		System.out.println("[3] para ver todos os Administradores");
+		System.out.println("[4] para montar um pacote viagem");
+		System.out.println("[5] para deletar usuario");
+		System.out.println("[6] para ver todos os usuarios");
+		System.out.println("[7] para ver um usuario especifico");
+		System.out.println("[0] para voltar ao menu principal...");
 		System.out.print("Eai major, qual opção você escolheu? ");
 	}
 

@@ -21,13 +21,13 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO Cliente (RG,CPF,numero_viagens,cartao_credito,id_usuario) VALUES (?,?,?,?,?)",
+					"INSERT INTO Cliente (RG,CPF,numeroViagens,cartaoCredito,fkUsuario) VALUES (?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getRG());
 			super.pst.setString(2, obj.getCPF());
 			super.pst.setInt(3, obj.getNumeroViagens());
-			super.pst.setString(4, obj.getcartaoCredito());
-			super.pst.setInt(5, obj.getidUsuario());
+			super.pst.setString(4, obj.getCartaoCredito());
+			super.pst.setInt(5, obj.getIdUsuario());
 
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
@@ -44,7 +44,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Db.closeStatement(super.pst);
+			Db.closePreparedStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
 		return 0;
@@ -55,9 +55,9 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement(
-					"UPDATE Cliente SET  Cliente.numero_viagens=?, Cliente.cartao_credito=? WHERE Cliente.id = ?");
+					"UPDATE Cliente SET  Cliente.numeroViagens=?, Cliente.cartaoCredito=? WHERE Cliente.idCliente = ?");
 			super.pst.setInt(1, obj.getNumeroViagens());
-			super.pst.setString(2, obj.getcartaoCredito());
+			super.pst.setString(2, obj.getCartaoCredito());
 			super.pst.setInt(3, obj.getId());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -71,7 +71,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 	public void delete(Cliente obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = c1.prepareStatement("DELETE FROM Cliente WHERE Cliente.id =?");
+			super.pst = c1.prepareStatement("DELETE FROM Cliente WHERE Cliente.idCliente =?");
 			super.pst.setInt(1, obj.getId());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -85,7 +85,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = c1.prepareStatement("DELETE FROM Cliente WHERE Cliente.id =?");
+			super.pst = c1.prepareStatement("DELETE FROM Cliente WHERE Cliente.idCliente =?");
 			pst.setInt(1, id);
 			super.pst.executeUpdate();
 
@@ -98,33 +98,44 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 
 	@Override
 	public Cliente findById(Integer id) {
+		Cliente c = new Cliente();
+
+		String sql = "SELECT * FROM Usuario INNER JOIN Cliente ON Usuario.idUsuario=Cliente.fkUsuario INNER JOIN Endereco ON Usuario.fkEndereco = Endereco.idEndereco WHERE Cliente.idCliente=?";
+		//idCliente,nome,email,password,telefone,imagem,tipoUsuario,dataLogin,fkEndereco,RG,CPF,numeroViagens,cartaoCredito,fkUsuario,CEP,estado,cidade,bairro,rua,numero"
+		
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement(
-					"SELECT * FROM Usuario JOIN Cliente on Usuario.id = Cliente.id_usuario JOIN Endereco on Usuario.id_endereco = Endereco.id WHERE Cliente.id=?",
-					Statement.RETURN_GENERATED_KEYS);
-			super.pst.setInt(1, id);
-			super.rs = pst.executeQuery();
-			super.rs.first();
-			Cliente c = new Cliente(rs.getInt("id"), rs.getString("RG"), rs.getString("CPF"),
-					rs.getInt("numero_viagens"), rs.getString("cartao_credito"), rs.getInt("id_usuario"));
-			c.setNome(super.rs.getString("nome"));
-			c.setEmail(super.rs.getString("email"));
-			c.setPassword(super.rs.getString("password"));
-			c.setTelefone(super.rs.getString("telefone"));
-			c.setImagem(super.rs.getString("imagem"));
-			c.setTipoUsuario(super.rs.getInt("tipo_usuario"));
-			c.setIdEndereco(super.rs.getInt("id_endereco"));
-			c.setEndereco(super.rs.getInt("id"), super.rs.getString("CEP"), super.rs.getString("estado"),
-					super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
-					super.rs.getInt("numero"));
-			return c;
+			super.pst = super.c1.prepareStatement(sql);
+			super.pst.setInt(1, id.intValue());
+			
+			super.rs = super.pst.executeQuery();
+			
+			while(super.rs.next()) {
+				c.setId(super.rs.getInt("idCliente"));
+				c.setRG(rs.getString("RG"));
+				c.setCPF(rs.getString("CPF"));
+				c.setNumeroViagens(rs.getInt("numeroViagens"));
+				c.setcartaoCredito(rs.getString("cartaoCredito"));
+				c.setidUsuario( rs.getInt("fkUsuario"));
+				
+				c.setNome(super.rs.getString("nome"));
+				c.setEmail(super.rs.getString("email"));
+				c.setPassword(super.rs.getString("password"));
+				c.setTelefone(super.rs.getString("telefone"));
+				c.setImagem(super.rs.getString("imagem"));
+				c.setTipoUsuario(super.rs.getInt("tipoUsuario"));
+				c.setIdEndereco(super.rs.getInt("fkEndereco"));
+				c.setEndereco(super.rs.getInt("fkEndereco"), super.rs.getString("CEP"), super.rs.getString("estado"),
+						super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
+						super.rs.getInt("numero"));
+			}
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
-			Db.closePreparedStatement(super.pst);
+			Db.closeStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
+		return c;
 	}
 
 	@Override
@@ -133,18 +144,19 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 		try {
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT * FROM Usuario JOIN Cliente on Usuario.id = Cliente.id_usuario JOIN Endereco on Usuario.id_endereco = Endereco.id");
+			super.rs = super.st.executeQuery(
+					"SELECT * FROM Usuario INNER JOIN Cliente on Usuario.idUsuario = Cliente.fkUsuario INNER JOIN Endereco on Usuario.fkEndereco = Endereco.idEndereco");
 			while (super.rs.next()) {
-				Cliente c = new Cliente(rs.getInt("id"), rs.getString("RG"), rs.getString("CPF"),
-						rs.getInt("numero_viagens"), rs.getString("cartao_credito"), rs.getInt("id_usuario"));
+				Cliente c = new Cliente(rs.getInt("idCliente"), rs.getString("RG"), rs.getString("CPF"),
+						rs.getInt("numeroViagens"), rs.getString("cartaoCredito"), rs.getInt("fkUsuario"));
 				c.setNome(super.rs.getString("nome"));
 				c.setEmail(super.rs.getString("email"));
 				c.setPassword(super.rs.getString("password"));
 				c.setTelefone(super.rs.getString("telefone"));
 				c.setImagem(super.rs.getString("imagem"));
-				c.setTipoUsuario(super.rs.getInt("tipo_usuario"));
-				c.setIdEndereco(super.rs.getInt("id_endereco"));
-				c.setEndereco(super.rs.getInt("id"), super.rs.getString("CEP"), super.rs.getString("estado"),
+				c.setTipoUsuario(super.rs.getInt("tipoUsuario"));
+				c.setIdEndereco(super.rs.getInt("fkEndereco"));
+				c.setEndereco(super.rs.getInt("idCliente"), super.rs.getString("CEP"), super.rs.getString("estado"),
 						super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
 						super.rs.getInt("numero"));
 				clientes.add(c);

@@ -16,8 +16,8 @@ public class Cliente extends Usuario {
 	private String cartaoCredito;
 	private Integer idUsuario;
 
-	private ClienteDAO clienteDAO = new ClienteDAO();
 	private CarrinhoCompra carrinho = new CarrinhoCompra();
+	private ClienteDAO clienteDAO = new ClienteDAO();
 
 	public Cliente() {
 		super();
@@ -47,6 +47,10 @@ public class Cliente extends Usuario {
 		this.CPF = cPF;
 		this.numeroViagens = numeroViagens;
 		this.cartaoCredito = cartaoCredito;
+		this.idUsuario = idUsuario;
+	}
+
+	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
@@ -82,7 +86,7 @@ public class Cliente extends Usuario {
 		this.numeroViagens = numeroViagens;
 	}
 
-	public String getcartaoCredito() {
+	public String getCartaoCredito() {
 		return cartaoCredito;
 	}
 
@@ -90,7 +94,7 @@ public class Cliente extends Usuario {
 		this.cartaoCredito = cartaoCredito;
 	}
 
-	public Integer getidUsuario() {
+	public Integer getIdUsuario() {
 		return idUsuario;
 	}
 
@@ -136,8 +140,8 @@ public class Cliente extends Usuario {
 		if (this.id != null) {
 			this.clienteDAO.update(
 					new Cliente(this.id, this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario));
-		}else {
-			System.out.println(Utils.escreverColorido(Colors.VERMELHO,"impossivel atualizar esse Cliente..."));
+		} else {
+			System.out.println(Utils.escreverColorido(Colors.VERMELHO, "impossivel atualizar esse Cliente..."));
 		}
 	}
 
@@ -146,7 +150,8 @@ public class Cliente extends Usuario {
 		if (this.id != null) {
 			this.clienteDAO.deleteById(this.id);
 		} else {
-			System.out.println(Utils.escreverColorido(Colors.VERMELHO,"Esse cliente \"Não foi encontrado\", logo não houve deleção."));
+			System.out.println(Utils.escreverColorido(Colors.VERMELHO,
+					"Esse cliente \"Não foi encontrado\", logo não houve deleção."));
 		}
 	}
 
@@ -189,13 +194,50 @@ public class Cliente extends Usuario {
 
 	public static Cliente preencherCliente(Scanner sc) {
 		String RG, CPF, cartaoCredito;
-		System.out.print("Digite seu o seu RG: ");
-		RG = sc.next();
-		System.out.print("Digite seu o seu CPF: ");
-		CPF = sc.next();
-		System.out.print("Digite seu cartão de credito: ");
-		cartaoCredito = sc.next();
+		do {
+			System.out.print("Digite seu o seu RG: ");
+			RG = sc.next();
+			if (RG.length() > 7) {
+				System.out.println("Informe um rg com 7 caracteres pfv...");
+			}
+		} while (RG.length() > 8);
+
+		do {
+			System.out.print("Digite seu o seu CPF: ");
+			CPF = sc.next();
+			if (CPF.length() > 7) {
+				System.out.println("Informe um cpf com 11 caracteres pfv...");
+			}
+		} while (CPF.length() > 12);
+
+		do {
+			System.out.print("Digite seu cartão de credito: ");
+			cartaoCredito = sc.next();
+			if (cartaoCredito.length() > 7) {
+				System.out.println("Informe um caratao com 16 caracteres pfv...");
+			}
+		} while (cartaoCredito.length() > 17);
+
 		return new Cliente(RG, CPF, 0, cartaoCredito);
 	}
 
+	public void buscarPorId() {
+		Cliente c = this.clienteDAO.findById(this.id);
+		System.out.println(c.toString());
+		this.id = c.getId();
+		this.setNome(c.getNome());
+		this.setEmail(c.getEmail());
+		this.setPassword(c.getPassword());
+		this.setTelefone(c.getTelefone());
+		this.setImagem(c.getImagem());
+		this.setDataLogin(c.getDataLogin());
+		this.setTipoUsuario(c.getTipoUsuario());
+		this.setIdEndereco(c.getIdEndereco());
+		this.RG = c.getRG();
+		this.setCPF(c.getCPF());
+		this.numeroViagens = c.getNumeroViagens();
+		this.cartaoCredito = c.getCartaoCredito();
+		this.idUsuario = c.getIdUsuario();
+		super.setEndereco(c.getEndereco());
+	}
 }

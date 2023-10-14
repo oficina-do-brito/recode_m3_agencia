@@ -20,7 +20,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1
-					.prepareStatement("INSERT INTO  revisa (id_administrador, id_pacote_viagem) values(?,?)");
+					.prepareStatement("INSERT INTO  revisa (idAdministrador, idPacote_viagem) values(?,?)");
 			super.pst.setInt(1, obj.getIdAdministrador());
 			super.pst.setInt(2, obj.getIdPacoteViagem());
 			super.pst.executeUpdate();
@@ -39,7 +39,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1
-					.prepareStatement("UPDATE revisa revisa.id_administrador=? WHERE revisa.id_administrador=?");
+					.prepareStatement("UPDATE revisa revisa.idAdministrador=? WHERE revisa.idAdministrador=?");
 			super.pst.setInt(1, obj.getIdAdministrador());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -54,7 +54,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"DELETE FROM revisa WHERE revisa.id_administrador AND revisa.id_pacote_viagem =?");
+					"DELETE FROM revisa WHERE revisa.idAdministrador AND revisa.idPacote_viagem =?");
 			super.pst.setInt(1, obj.getIdAdministrador());
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
@@ -68,7 +68,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = c1.prepareStatement("DELETE FROM revisa WHERE revisa.id_administrador");
+			super.pst = c1.prepareStatement("DELETE FROM revisa WHERE revisa.idAdministrador");
 			super.pst.setInt(1, id);
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -84,9 +84,9 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 		try {
 			super.c1 = Db.getConnection();
 			super.st = super.c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT FROM revisa WHERE revisa.id_administrador =?");
+			super.rs = super.st.executeQuery("SELECT FROM revisa WHERE revisa.idAdministrador =?");
 			rs.first();
-			rv = new Revisao(super.rs.getInt("id_administrador"),super.rs.getInt("id_pacote_viagem"));
+			rv = new Revisao(super.rs.getInt("idAdministrador"),super.rs.getInt("idPacote_viagem"));
 			return rv;
 			
 		}catch(SQLException e){
@@ -102,7 +102,7 @@ public class RevisaoDAO extends PadraoDao implements IGenericDAO<Revisao> {
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT * FROM revisa");
 			while (super.rs.next()) {
-				Revisao r = new Revisao(super.rs.getInt("id_administrador"),super.rs.getInt("id_pacote_viagem"));
+				Revisao r = new Revisao(super.rs.getInt("idAdministrador"),super.rs.getInt("idPacote_viagem"));
 				listRv.add(r);
 			}
 			return listRv;

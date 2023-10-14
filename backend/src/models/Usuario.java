@@ -178,23 +178,20 @@ public class Usuario implements ICRUD {
 				+ telefone + ", imagem=" + imagem + ", dataLogin=" + dataLogin + ", tipoUsuario=" + tipoUsuario
 				+ ", idEndereco=" + idEndereco + ".";
 	}
-	
-	public void buscarPorID(Scanner sc) {
-		int id =0;
-		System.out.println("Informe o id do usuario que vc quer buscar:");
-		id = sc.nextInt();
+
+	public void buscarPorID(int id) {
 		Usuario clone = this.usuarioDAO.findById(id);
-		this.id = clone.id;
-		this.nome = clone.nome;
-		this.email = clone.email;
-		this.password = clone.password;
-		this.telefone = clone.telefone;
-		this.imagem = clone.imagem;
-		this.dataLogin = clone.dataLogin;
-		this.tipoUsuario = clone.tipoUsuario;
-		this.idEndereco = clone.idEndereco;
-		System.out.println(clone.toString());
+		this.id = clone.getId();
+		this.nome = clone.getNome();
+		this.email = clone.getEmail();
+		this.password = clone.getPassword();
+		this.telefone = clone.getTelefone();
+		this.imagem = clone.getImagem();
+		this.dataLogin = clone.getDataLogin();
+		this.tipoUsuario = clone.getTipoUsuario();
+		this.idEndereco = clone.getIdEndereco();
 	}
+
 	@Override
 	public void create() {
 		this.endereco.create();
@@ -204,8 +201,10 @@ public class Usuario implements ICRUD {
 
 	@Override
 	public void update() {
-		this.usuarioDAO.update(new Usuario(this.id, this.nome, this.email, this.password, this.telefone, this.imagem,
-				this.dataLogin, this.tipoUsuario, this.idEndereco));
+		if (this.id != null) {
+			this.usuarioDAO.update(new Usuario(this.id, this.nome, this.email, this.password, this.telefone,
+					this.imagem, this.dataLogin, this.tipoUsuario, this.idEndereco));
+		}
 	}
 
 	@Override
@@ -223,6 +222,16 @@ public class Usuario implements ICRUD {
 		for (Usuario u : usuarios) {
 			System.out.println(u.toString());
 		}
+	}
+	public boolean authenticar(){
+		Usuario aut = this.usuarioDAO.findByEmailAndPassoword(this.email,this.password);
+		if(aut != null){
+			this.id = aut.getId();
+			this.tipoUsuario = aut.getTipoUsuario();
+			return true;
+		}
+		return false;
+		
 	}
 
 	public static Usuario preencherUsuario(Scanner sc) {

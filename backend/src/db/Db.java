@@ -40,25 +40,23 @@ public class Db {
 		try {
 			st = conexao.createStatement();
 			st.executeUpdate("USE agencia");
-			st.executeUpdate(DbTable.getDDLCreateHospedagem());
-			st.executeUpdate(DbTable.getDDLCreatePacoteViagem());
-			st.executeUpdate(DbTable.getDDLCreateCliente());
 			st.executeUpdate(DbTable.getDDLCreateUsuario());
 			st.executeUpdate(DbTable.getDDLCreateEndereco());
 			st.executeUpdate(DbTable.getDDLCreateFornecedor());
 			st.executeUpdate(DbTable.getDDLCreateAdministrador());
-			st.executeUpdate(DbTable.getDDLCreateRevisa());
-			st.executeUpdate(DbTable.getDDLCreateOrigemDestino());
-			st.executeUpdate(DbTable.getDDLCreatePassagem());
+			st.executeUpdate(DbTable.getDDLCreateCliente());
 			st.executeUpdate(DbTable.getDDLCreateCarrinhoCompra());
-			st.executeUpdate(DbTable.getDDLSetFornecedorFkUsuario());
-			st.executeUpdate(DbTable.getDDLSetClienteFkUsuario());
-			st.executeUpdate(DbTable.getDDLSetAdministradorFkUsuario());
-			st.executeUpdate(DbTable.getDDLSetPacoteViagemFkOrigemDestino());
-			st.executeUpdate(DbTable.getDDLSetPacoteViagemFkHospedagem());
-			st.executeUpdate(DbTable.getDDLSetPacoteViagemFkCarrinhoCompra());
-			st.executeUpdate(DbTable.getDDLSetOrigemDestinoFkEndereco());
+			st.executeUpdate(DbTable.getDDLCreateHospedagem());
+			st.executeUpdate(DbTable.getDDLCreatePassagem());
+			st.executeUpdate(DbTable.getDDLCreatePacoteViagem());
+			st.executeUpdate(DbTable.getDDLCreateOrigemDestino());
+			st.executeUpdate(DbTable.getDDLCreateRevisa());
+
 			st.executeUpdate(DbTable.getDDLSetUsuarioFkEndereco());
+			st.executeUpdate(DbTable.getDDLSetHospedagemFkOrigemDestino());
+			st.executeUpdate(DbTable.getDDLSetPassagemFkPacoteViagem());
+			st.executeUpdate(DbTable.getDDLSetPacoteViagemFkOrigemDestino());
+
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {

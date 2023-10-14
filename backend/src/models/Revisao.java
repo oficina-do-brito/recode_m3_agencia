@@ -6,6 +6,8 @@ public class Revisao implements ICRUD{
 	private Integer idAdministrador;
 	private Integer idPacoteViagem;
 	
+	private PacoteViagem pacote = new PacoteViagem();
+	
     public Revisao(Integer int1, Integer int2) {
 		this.idAdministrador = int1;
 		this.idPacoteViagem = int2;

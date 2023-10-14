@@ -18,7 +18,8 @@ public class Passagem implements ICRUD{
 	private Integer idPacoteViagem;
 	
 	private PassagemDAO passagemDAO = new PassagemDAO();
-
+	
+	public Passagem() {}
 	public Passagem(Integer id, String titulo, double preco, Integer tipo, Integer idFornecedor,
 			Integer idPacoteViagem) {
 		this.id = id;
@@ -142,7 +143,7 @@ public class Passagem implements ICRUD{
 	public static Passagem preencherPassagem(Scanner sc) {
 		String titulo;
 		double preco;
-		Integer tipo;
+		int tipo;
 		do{
 			System.out.println("Informe um nome para esta passagem: ");
 			titulo = sc.nextLine();

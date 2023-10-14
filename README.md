@@ -11,14 +11,20 @@
 </p>
 
 <p align="center">
+ <a href="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/modelagem/roadmap.png">Roadmap da aplicação</a> •
   <a href="#Modelo_Conceitual">Modelo Conceitual</a> •
   <a href="#Modelo_Logico">Modelo Logico</a> •
-  <a href="#Diagrama_de_Classe">Roadmap da aplicação</a> •
+  <a href="#Diagrama_de_Classe">Diagrama de Classe</a> •
   <a href="#Versões">Versões mais antigas</a> •
   <a href="#Tecnologias_usadas">Tecnologias Usadas</a> •
    <a href="#Rodando_aplicação">Rodando aplicação</a> •
   <a href="https://github.com/oficina-do-brito/recode_m3_agencia/blob/main/LICENSE">License</a>
 </p>
+
+## Explicações
+
+- A criação da tabela Usuario isolada dos demais tipos dele deve-se ao fato de que no meu modelo de aplicação, as informações fiquem armazenadas para Authenticação, 
+- e não precise estar fazendo tantas requisições, é apenas uma estrategia de requisição de aplicações multiplataforma sebosas.
 
 ## Versões
 
@@ -69,24 +75,19 @@ Este é um exemplo de como você pode configurar o projeto para que possa execut
 
 ### Rodando o projeto backend
 
-Sem docker e docker-compose na maquina 
+Sem docker e docker-compose na maquina :
 
-```bash
-# Clone o repositorio e inicie um bd
-  git clone https://github.com/oficina-do-brito/recode_m3_agencia.git && cd recode_m3_agencia/backend/
-
-```
-- criar uma database com nome agencia
+- Crie a database agencia no seu banco e certifique-se de estar usando usuario root e senha root.
 - Depois vai no eclipse, verifique de estar com o mysql conect instalado no projeto, como biblioteca externa.
 - E run.
 
 Com docker e docker-compose na maquina, abra seu terminal git e:
 
+- Vai no eclipse, verifique de estar com o mysql conect instalado no projeto, como biblioteca externa.
 ```bash
 # Clone o repositorio e inicie um bd
   git clone https://github.com/oficina-do-brito/recode_m3_agencia.git && cd recode_m3_agencia/backend/ && docker-compose up
 ```
-- Depois vai no eclipse, verifique de estar com o mysql conect instalado no projeto, como biblioteca externa.
 - E run.
 
 

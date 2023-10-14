@@ -10,18 +10,17 @@ import db.Db;
 import db.DbIntegrityException;
 import models.Administrador;
 
-public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administrador>{
+public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administrador> {
 
-    public AdministradorDAO() {
-    	super();
-    }
+	public AdministradorDAO() {
+		super();
+	}
 
-    @Override
+	@Override
 	public Integer save(Administrador obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement(
-					"INSERT INTO Administrador (numero_viagem_revisadas, id_usuario) VALUES (?,?)",
+			super.pst = super.c1.prepareStatement("INSERT INTO Administrador (nViagensRevisadas, fkUsuario) VALUES (?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setInt(1, obj.getNumeroViagemRevisadas());
 			super.pst.setInt(2, obj.getIdUsuario());
@@ -52,8 +51,8 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 	public void update(Administrador obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = c1.prepareStatement(
-					"UPDATE Administrador SET  Administrador.numero_viagem_revisadas=? WHERE Administrador.id = ?");
+			super.pst = c1
+					.prepareStatement("UPDATE Administrador SET  Administrador.nViagensRevisadas=? WHERE Administrador.idAdministrador = ?");
 			super.pst.setInt(1, obj.getNumeroViagemRevisadas());
 
 			int linhasAlteradas = super.pst.executeUpdate();
@@ -71,7 +70,7 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 	public void delete(Administrador obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Administrador WHERE Administrador.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Administrador WHERE Administrador.idAdministrador =?");
 			super.pst.setInt(1, obj.getId());
 
 			int linhasAlteradas = super.pst.executeUpdate();
@@ -89,7 +88,7 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Administrador WHERE Administrador.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Administrador WHERE Administrador.idAdministrador =?");
 			pst.setInt(1, id);
 
 			int linhasAlteradas = super.pst.executeUpdate();
@@ -102,23 +101,42 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 		}
 
 	}
-	
+
 	@Override
 	public Administrador findById(Integer id) {
-		Administrador u = null;
+		String sql = "SELECT idAdministrador,nome,email,password,telefone,imagem,tipoUsuario,dataLogin,fkEndereco,nViagensRevisadas,fkUsuario,"
+				+ "CEP,estado,cidade,bairro,rua,numero "
+				+ "FROM Usuario INNER JOIN `Administrador` ON `Usuario`.`idUsuario` = `Administrador`.`fkUsuario` INNER JOIN Endereco ON `Usuario`.`fkEndereco` = `Endereco`.`idEndereco` WHERE `Administrador`.`idAdministrador`=?";
+		Administrador a = new Administrador();
 		try {
 			super.c1 = Db.getConnection();
-			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT FROM Administrador WHERE Administrador.id =?");
-			super.rs.first();
-			u = new Administrador(super.rs.getInt("id"), super.rs.getInt("numero_viagem_revisadas"), super.rs.getInt("id_usuario"));
-			return u;
+			super.pst = super.c1.prepareStatement(sql);
+			super.pst.setInt(1, id.intValue());
+			super.rs = super.pst.executeQuery();
+			while(super.rs.next()) {
+				a.setId(super.rs.getInt("idAdministrador"));
+				a.setNumeroViagemRevisadas(super.rs.getInt("nViagensRevisadas"));
+				a.setIdUsuario(super.rs.getInt("fkUsuario"));
+				
+				a.setNome(super.rs.getString("nome"));
+				a.setEmail(super.rs.getString("email"));
+				a.setPassword(super.rs.getString("password"));
+				a.setTelefone(super.rs.getString("telefone"));
+				a.setImagem(super.rs.getString("imagem"));
+				a.setTipoUsuario(super.rs.getInt("tipoUsuario"));
+				a.setIdEndereco(super.rs.getInt("fkEndereco"));
 
+				a.setEndereco(super.rs.getInt("fkEndereco"), super.rs.getString("CEP"), super.rs.getString("estado"),
+						super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
+						super.rs.getInt("numero"));
+			}
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
-			Db.closeStatement(super.st);
+			Db.closePreparedStatement(super.pst);
+			Db.closeResultSet(super.rs);
 		}
+		return a;
 	}
 
 	@Override
@@ -127,18 +145,14 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 		try {
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT * FROM Usuario INNER JOIN Administrador on Usuario.id = Administrador.id_usuario");
+			super.rs = super.st.executeQuery(
+					"SELECT * FROM Usuario INNER INNER JOIN Administrador on Usuario.idUsuario = Administrador.fkUsuario");
 
 			while (super.rs.next()) {
-				Administrador u = new Administrador(super.rs.getString("nome"),
-				super.rs.getString("email"),
-				super.rs.getString("password"),
-				super.rs.getString("telefone"),
-				super.rs.getString("imagem"),
-				super.rs.getInt("tipoUsuario"),
-				super.rs.getInt("idEndereco"),
-				super.rs.getInt("numero_viagem_revisadas"),
-				super.rs.getInt("id_usuario"));
+				Administrador u = new Administrador(super.rs.getString("nome"), super.rs.getString("email"),
+						super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),
+						super.rs.getInt("tipoUsuario"), super.rs.getInt("idEndereco"), super.rs.getInt("nViagensRevisadas"),
+						super.rs.getInt("fkUsuario"));
 				Administradors.add(u);
 			}
 			return Administradors;
@@ -149,5 +163,5 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 			Db.closeStatement(super.st);
 		}
 	}
-    
+
 }

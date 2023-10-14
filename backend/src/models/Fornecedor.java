@@ -15,6 +15,7 @@ public class Fornecedor extends Usuario {
 	private Integer idUsuario;
 
 	private ArrayList<Passagem> passagens = new ArrayList<Passagem>();
+	private ArrayList<Hospedagem> hospedagens = new ArrayList<Hospedagem>();
 	private FornecedorDAO fornecedorDAO = new FornecedorDAO();
 
 	public Fornecedor() {
@@ -124,6 +125,7 @@ public class Fornecedor extends Usuario {
 		return "é um Fornecedor com -> CNPJ=" + CNPJ + ", tipoServico=" + tipoServico + ", idUsuario=" + idUsuario
 				+ ", Tambem," + super.toString() + " ";
 	}
+
 	public static Fornecedor preencherFornecedor(Scanner sc) {
 		String CNPJ;
 		Integer tipoServico;
@@ -168,5 +170,25 @@ public class Fornecedor extends Usuario {
 		for (Fornecedor f : fornecedores) {
 			System.out.println(f.toString());
 		}
+	}
+
+	public void buscarPorId() {
+		Fornecedor f = this.fornecedorDAO.findById(this.id);
+		this.id = f.getId();
+		this.setNome(f.getNome());
+		this.setEmail(f.getEmail());
+		this.setPassword(f.getPassword());
+		this.setTelefone(f.getTelefone());
+		this.setImagem(f.getImagem());
+		this.setDataLogin(f.getDataLogin());
+		this.setTipoUsuario(f.getTipoUsuario());
+		this.setIdEndereco(f.getIdEndereco());
+
+		this.CNPJ = f.getCNPJ();
+		this.tipoServico = f.getTipoServico();
+		this.idUsuario = f.getIdUsuario();
+
+		super.setEndereco(f.getEndereco());
+
 	}
 }

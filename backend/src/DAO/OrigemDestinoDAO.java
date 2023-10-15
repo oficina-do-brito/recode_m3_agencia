@@ -21,7 +21,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO OrigemDestino (nome,email,password,telefone,imagem,dataLogin,tipo_OrigemDestino,idEndereco) VALUES (?,?,?,?,?,?,?,?)",
+					"INSERT INTO OrigemDestino (nome,imagem,descricao,tipo,fkEndereco) VALUES (?,?,?,?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getImagem());
@@ -30,18 +30,17 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.pst.setInt(5, obj.getIdEndereco());
 			int l = super.pst.executeUpdate();
 			if (l > 0) {
-				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
+				super.rs = super.pst.getGeneratedKeys();
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}
 				return id;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Db.closeStatement(pst);
+			Db.closePreparedStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
 		return 0;
@@ -52,7 +51,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement(
-					"UPDATE OrigemDestino SET  OrigemDestino.nome=?, OrigemDestino.imagem=?, OrigemDestino.descricao=? OrigemDestino.tipo=? WHERE OrigemDestino.id = ?");
+					"UPDATE OrigemDestino SET  OrigemDestino.nome=?, OrigemDestino.imagem=?, OrigemDestino.descricao=? OrigemDestino.tipo=? WHERE OrigemDestino.idOrigem = ?");
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getDescricao());
 			super.pst.setInt(3, obj.getTipo());
@@ -63,14 +62,13 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		} finally {
 			Db.closePreparedStatement(super.pst);
 		}
-
 	}
 
 	@Override
 	public void delete(OrigemDestino obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM OrigemDestino WHERE OrigemDestino.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM OrigemDestino WHERE OrigemDestino.idOrigem =?");
 			super.pst.setInt(1, obj.getId());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -78,14 +76,13 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		} finally {
 			Db.closePreparedStatement(super.pst);
 		}
-
 	}
-
+	
 	@Override
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM OrigemDestino WHERE OrigemDestino.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM OrigemDestino WHERE OrigemDestino.idOrigem =?");
 			pst.setInt(1, id);
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -93,25 +90,23 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		} finally {
 			Db.closeStatement(super.pst);
 		}
-
 	}
-
+	//idOrigem ,nome ,imagem ,descricao ,tipo INTEGER,fkEndereco
 	@Override
 	public OrigemDestino findById(Integer id) {
 		OrigemDestino u = null;
 		try {
 			super.c1 = Db.getConnection();
-			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT FROM OrigemDestino WHERE OrigemDestino.id =?");
+			super.pst = c1.prepareStatement("SELECT * FROM OrigemDestino WHERE OrigemDestino.idOrigem =?");
+			super.rs = super.pst.executeQuery();
 			super.rs.first();
-			//id ,nome,imagem ,descricao ,tipo ,idEndereco
-			u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("idEndereco"));
+			u = new OrigemDestino(super.rs.getInt("idOrigem"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("fkEndereco"));
 			return u;
-
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
-			Db.closeStatement(super.st);
+			Db.closePreparedStatement(super.pst);
+			Db.closeResultSet(super.rs);
 		}
 	}
 
@@ -123,7 +118,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT * FROM OrigemDestino");
 			while (super.rs.next()) {
-				OrigemDestino u = new OrigemDestino(super.rs.getInt("id"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("idEndereco"));
+				OrigemDestino u = new OrigemDestino(super.rs.getInt("idOrigem"), super.rs.getString("nome"), super.rs.getString("imagem"),super.rs.getString("descricao"), super.rs.getInt("tipo"), super.rs.getInt("fkEndereco"));
 				OrigemDestinos.add(u);
 			}
 			return OrigemDestinos;
@@ -132,6 +127,7 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
 			Db.closeStatement(super.st);
+			Db.closeResultSet(super.rs);
 		}
 	}
     

@@ -12,6 +12,7 @@ import db.DbIntegrityException;
 import models.Usuario;
 
 public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
+	
 	public UsuarioDAO() {
 		super();
 	}
@@ -33,8 +34,8 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.pst.setInt(8, obj.getIdEndereco());
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
-				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
+				super.rs = super.pst.getGeneratedKeys();
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}
@@ -43,7 +44,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Db.closeStatement(super.pst);
+			Db.closePreparedStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
 		return 0;
@@ -80,7 +81,6 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		} finally {
 			Db.closePreparedStatement(super.pst);
 		}
-
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
-			Db.closeStatement(super.st);
+			Db.closePreparedStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
 	}
@@ -158,7 +158,7 @@ public class UsuarioDAO extends PadraoDao implements IGenericDAO<Usuario> {
 			super.pst.setString(1, email);
 			super.pst.setString(2, password);
 			super.rs = super.pst.executeQuery();
-			if (super.rs.next()) {
+			while(super.rs.next()) {
 				u = new Usuario(super.rs.getInt("idUsuario"), super.rs.getString("nome"), super.rs.getString("email"),
 						super.rs.getString("password"), super.rs.getString("telefone"), super.rs.getString("imagem"),
 						super.rs.getDate("dataLogin"), super.rs.getInt("tipoUsuario"),

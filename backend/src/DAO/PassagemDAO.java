@@ -30,9 +30,8 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
-				System.out.printf("Inserido %d Passagem no banco, ... %n %n", linhasAlteradas);
-				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
+				super.rs = super.pst.getGeneratedKeys();
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}
@@ -41,7 +40,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Db.closeStatement(pst);
+			Db.closePreparedStatement(super.pst);
 			Db.closeResultSet(super.rs);
 		}
 		return 0;
@@ -63,7 +62,6 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 		} finally {
 			Db.closePreparedStatement(super.pst);
 		}
-
 	}
 
 	@Override
@@ -78,7 +76,6 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 		} finally {
 			Db.closePreparedStatement(super.pst);
 		}
-
 	}
 
 	@Override
@@ -93,26 +90,30 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 		} finally {
 			Db.closeStatement(super.pst);
 		}
-
 	}
 
 	@Override
 	public Passagem findById(Integer id) {
-		Passagem p = null;
+		Passagem p = new Passagem();
 		try {
 			super.c1 = Db.getConnection();
-			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT FROM Passagem WHERE Passagem.id =?");
-			super.rs.first();
-			p = new Passagem(rs.getInt("id"), rs.getString("titulo"), rs.getDouble("preco"),
-					rs.getInt("tipo"), rs.getInt("idFornecedor"), rs.getInt("idPacote_viagem"));
-			return p;
-
+			super.pst = c1.prepareStatement("SELECT FROM Passagem WHERE Passagem.id =?");
+			super.rs = super.pst.executeQuery();
+			while(super.rs.next()) {
+				p.setId(rs.getInt("idPassagem"));
+				p.setTitulo(rs.getString("titulo"));
+				p.setPreco(rs.getDouble("preco"));
+				p.setTipo(rs.getInt("tipo"));
+				p.setIdFornecedor(rs.getInt("idFornecedor"));
+				p.setIdPacoteViagem(rs.getInt("idPacote_viagem"));
+			}
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
-			Db.closeStatement(super.st);
+			Db.closePreparedStatement(super.pst);
+			Db.closeResultSet(super.rs);
 		}
+		return p;
 	}
 
 	@Override
@@ -123,17 +124,17 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery("SELECT * FROM Passagem");
 			while (super.rs.next()) {
-				Passagem u = new Passagem(super.rs.getInt("id"), super.rs.getString("titulo"), super.rs.getDouble("preco"),
+				Passagem u = new Passagem(super.rs.getInt("idPassagem"), super.rs.getString("titulo"), super.rs.getDouble("preco"),
 					super.rs.getInt("tipo"), super.rs.getInt("idFornecedor"), super.rs.getInt("idPacote_viagem"));
 				Passagems.add(u);
 			}
-			return Passagems;
-
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
 		} finally {
 			Db.closeStatement(super.st);
+			Db.closeResultSet(super.rs);
 		}
+		return Passagems;
 	}
     
 }

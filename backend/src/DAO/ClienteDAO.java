@@ -15,7 +15,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 	public ClienteDAO() {
 		super();
 	}
-
+	
 	@Override
 	public Integer save(Cliente obj) {
 		try {
@@ -31,8 +31,8 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
-				super.rs = super.pst.getGeneratedKeys();
 				int id = 0;
+				super.rs = super.pst.getGeneratedKeys();
 				while (super.rs.next()) {
 					id = super.rs.getInt(1);
 				}

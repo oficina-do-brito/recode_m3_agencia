@@ -43,12 +43,6 @@ public class DbTable {
 		return "CREATE TABLE IF NOT EXISTS revisa (fkAdministrador INTEGER,fkPacote INTEGER,FOREIGN KEY(fkAdministrador) REFERENCES Administrador (idAdministrador),FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote));";
 
 	}
-	/**
-	 *  ALTER TABLE Usuario ADD FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco);
-		ALTER TABLE Hospedagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);
-		ALTER TABLE Passagem ADD FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote);
-		ALTER TABLE PacoteViagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);
-	 */
 	
 	public static String getDDLSetUsuarioFkEndereco() {
 		return "ALTER TABLE Usuario ADD FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco);";

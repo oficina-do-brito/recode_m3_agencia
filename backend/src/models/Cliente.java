@@ -9,7 +9,6 @@ import pricipal.utils.Colors;
 import pricipal.utils.Utils;
 
 public class Cliente extends Usuario {
-	private Integer id;
 	private String RG;
 	private String CPF;
 	private Integer numeroViagens;
@@ -41,8 +40,7 @@ public class Cliente extends Usuario {
 	}
 
 	public Cliente(Integer id, String rG, String cPF, Integer numeroViagens, String cartaoCredito, Integer idUsuario) {
-		super();
-		this.id = id;
+		setId(id);
 		this.RG = rG;
 		this.CPF = cPF;
 		this.numeroViagens = numeroViagens;
@@ -52,14 +50,6 @@ public class Cliente extends Usuario {
 
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getRG() {
@@ -103,43 +93,22 @@ public class Cliente extends Usuario {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(id);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(id, other.id);
-	}
-
-	@Override
 	public String toString() {
-		return "é um Cliente com -> id=" + id + ", RG=" + RG + ", CPF=" + CPF + ", numeroViagens=" + numeroViagens
+		return "é um Cliente com -> id=" + getId() + ", RG=" + RG + ", CPF=" + CPF + ", numeroViagens=" + numeroViagens
 				+ ", cartaoCredito=" + cartaoCredito + ", idUsuario=" + idUsuario + ", Tambem," + super.toString()
 				+ " ";
 	}
 
 	@Override
 	public void create() {
-		this.id = this.clienteDAO
-				.save(new Cliente(this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario));
+		this.setId(this.clienteDAO.save(new Cliente(this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario)));
 	}
 
 	@Override
 	public void update() {
-		if (this.id != null) {
+		if (this.getId() != null) {
 			this.clienteDAO.update(
-					new Cliente(this.id, this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario));
+					new Cliente(this.getId(), this.RG, this.CPF, this.numeroViagens, this.cartaoCredito, this.idUsuario));
 		} else {
 			System.out.println(Utils.escreverColorido(Colors.VERMELHO, "impossivel atualizar esse Cliente..."));
 		}
@@ -147,8 +116,8 @@ public class Cliente extends Usuario {
 
 	@Override
 	public void delete() {
-		if (this.id != null) {
-			this.clienteDAO.deleteById(this.id);
+		if (this.getId() != null) {
+			this.clienteDAO.deleteById(this.getId());
 		} else {
 			System.out.println(Utils.escreverColorido(Colors.VERMELHO,
 					"Esse cliente \"Não foi encontrado\", logo não houve deleção."));
@@ -222,9 +191,8 @@ public class Cliente extends Usuario {
 	}
 
 	public void buscarPorId() {
-		Cliente c = this.clienteDAO.findById(this.id);
-		System.out.println(c.toString());
-		this.id = c.getId();
+		Cliente c = this.clienteDAO.findById(this.getId());
+		this.setId(c.getId());
 		this.setNome(c.getNome());
 		this.setEmail(c.getEmail());
 		this.setPassword(c.getPassword());

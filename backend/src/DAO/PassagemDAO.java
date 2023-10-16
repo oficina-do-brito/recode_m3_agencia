@@ -20,7 +20,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 	public Integer save(Passagem obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("INSERT INTO Passagem (titulo,preco,tipo,idFornecedor,idPacote_viagem) VALUES (?,?,?,?,?)",
+			super.pst = super.c1.prepareStatement("INSERT INTO Passagem (titulo,preco,tipo,fkFornecedor,fkPacote) VALUES (?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getTitulo());
 			super.pst.setDouble(2, obj.getPreco());
@@ -51,7 +51,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = c1.prepareStatement(
-					"UPDATE Passagem SET  Passagem.titulo=?, Passagem.preco=?, Passagem.tipo=? WHERE Passagem.id = ?");
+					"UPDATE Passagem SET  Passagem.titulo=?, Passagem.preco=?, Passagem.tipo=? WHERE Passagem.idPassagem = ?");
 			pst.setString(1, obj.getTitulo());
 			pst.setDouble(2, obj.getPreco());
 			pst.setInt(3, obj.getTipo());
@@ -68,7 +68,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 	public void delete(Passagem obj) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Passagem WHERE Passagem.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Passagem WHERE Passagem.idPassagem =?");
 			super.pst.setInt(1, obj.getId());
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -82,7 +82,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 	public void deleteById(Integer id) {
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = super.c1.prepareStatement("DELETE FROM Passagem WHERE Passagem.id =?");
+			super.pst = super.c1.prepareStatement("DELETE FROM Passagem WHERE Passagem.idPassagem =?");
 			super.pst.setInt(1, id);
 			super.pst.executeUpdate();
 		} catch (SQLException e) {
@@ -97,15 +97,15 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 		Passagem p = new Passagem();
 		try {
 			super.c1 = Db.getConnection();
-			super.pst = c1.prepareStatement("SELECT FROM Passagem WHERE Passagem.id =?");
+			super.pst = c1.prepareStatement("SELECT FROM Passagem WHERE Passagem.idPassagem =?");
 			super.rs = super.pst.executeQuery();
 			while(super.rs.next()) {
 				p.setId(rs.getInt("idPassagem"));
 				p.setTitulo(rs.getString("titulo"));
 				p.setPreco(rs.getDouble("preco"));
 				p.setTipo(rs.getInt("tipo"));
-				p.setIdFornecedor(rs.getInt("idFornecedor"));
-				p.setIdPacoteViagem(rs.getInt("idPacote_viagem"));
+				p.setIdFornecedor(rs.getInt("fkFornecedor"));
+				p.setIdPacoteViagem(rs.getInt("idPacote"));
 			}
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
@@ -125,7 +125,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 			super.rs = super.st.executeQuery("SELECT * FROM Passagem");
 			while (super.rs.next()) {
 				Passagem u = new Passagem(super.rs.getInt("idPassagem"), super.rs.getString("titulo"), super.rs.getDouble("preco"),
-					super.rs.getInt("tipo"), super.rs.getInt("idFornecedor"), super.rs.getInt("idPacote_viagem"));
+					super.rs.getInt("tipo"), super.rs.getInt("fkFornecedor"), super.rs.getInt("idPacote"));
 				Passagems.add(u);
 			}
 		} catch (SQLException e) {

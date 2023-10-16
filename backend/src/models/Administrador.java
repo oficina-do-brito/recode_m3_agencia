@@ -8,7 +8,6 @@ import java.util.Scanner;
 import DAO.AdministradorDAO;
 
 public class Administrador extends Usuario {
-	private Integer id;
 	private Integer numeroViagemRevisadas;
 	private Integer idUsuario;
 	
@@ -30,7 +29,7 @@ public class Administrador extends Usuario {
 
 	public Administrador(Integer id, Integer numeroViagemRevisadas, Integer idUsuario) {
 		super();
-		this.id = id;
+		this.setId(id);
 		this.numeroViagemRevisadas = numeroViagemRevisadas;
 		this.idUsuario = idUsuario;
 	}
@@ -42,14 +41,6 @@ public class Administrador extends Usuario {
 		this.idUsuario = idUsuario;
 	}
 	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Integer getNumeroViagemRevisadas() {
 		return numeroViagemRevisadas;
 	}
@@ -99,40 +90,20 @@ public class Administrador extends Usuario {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(id);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Administrador other = (Administrador) obj;
-		return Objects.equals(id, other.id);
-	}
-
-	@Override
 	public String toString() {
-		return "é um Administrador com ->id=" + id + ", numeroViagemRevisadas=" + numeroViagemRevisadas + ", idUsuario="
+		return "é um Administrador com ->id=" + this.getId() + ", numeroViagemRevisadas=" + numeroViagemRevisadas + ", idUsuario="
 				+ idUsuario + ", Tambem," + super.toString() + " ";
 	}
 
 	@Override
 	public void create() {
-		this.id = this.administradorDAO.save(new Administrador(0, this.idUsuario));
+		this.setId(this.administradorDAO.save(new Administrador(0, this.idUsuario)));
 	}
 
 	@Override
 	public void delete() {
-		if (this.id != null) {
-			this.administradorDAO.deleteById(this.id);
+		if (this.getId() != null) {
+			this.administradorDAO.deleteById(this.getId());
 		} else {
 			System.out.println("Esse administrador \"Não foi encontrado\", logo não houve deleção.");
 		}
@@ -148,7 +119,7 @@ public class Administrador extends Usuario {
 
 	@Override
 	public void update() {
-		if (this.id != null) {
+		if (this.getId() != null) {
 			this.administradorDAO.update(new Administrador(this.numeroViagemRevisadas, this.idUsuario));
 		}
 	}
@@ -159,18 +130,19 @@ public class Administrador extends Usuario {
 		String nome,possuiHospedagem,meioTransporte,imagem;
 		
 		this.passagem.readAll();
-		System.out.println("Ecolha o id de uma passagem para montar seu pacote viagem: ");
+		System.out.println("Ecolha o id de uma passagem para montar seu pacote viagem (int): ");
 		idPassagem = sc.nextInt();
 		
 		this.hospedagem.readAll();
-		System.out.println("Ecolha o id de uma hospedagm para montar seu pacote viagem: ");
+		System.out.println("Ecolha o id de uma hospedagm para montar seu pacote viagem: (int) ");
 		idHospedagem = sc.nextInt();
 		
 		System.out.println("Digite o nome do pacote: ");
+		sc.nextLine();
 		nome = sc.nextLine();
 		pv.setTitulo(nome);
 		
-		System.out.println("Digite o valor de desconto a ser aplicado encima do seu pacote de 0 a 40 %: ");
+		System.out.println("Digite o valor de desconto a ser aplicado encima do seu pacote de 0 a 40 %  (int): ");
 		valorDesconto = sc.nextInt();
 		pv.setValorDesconto(valorDesconto);
 		
@@ -178,36 +150,38 @@ public class Administrador extends Usuario {
 		valorTotal= sc.nextDouble();
 		pv.setPrecoTotal(valorTotal);
 		
-		System.out.println("Seu  pacote possui Hospedagem: ");
+		System.out.println("Seu  pacote possui Hospedagem: (string)");
+		sc.nextLine();
 		possuiHospedagem = sc.nextLine();
 		pv.setPossuiHospedagem(possuiHospedagem);
-		sc.nextLine();
 		
 		pv.setStatus("criado");
 		
-		System.out.println("Meio de Transporte: ");
+		System.out.println("Meio de Transporte (String): ");
+		sc.nextLine();
 		meioTransporte = sc.nextLine();
 		pv.setMeioTransporte(meioTransporte);
-		sc.nextLine();
+		
 		
 		System.out.println("O caminho de uma imagem para associar ao pacote: ");
+		sc.nextLine();
 		imagem = sc.nextLine();
 		pv.setImagem(imagem);
-		sc.nextLine();
 		
 		pv.setPrazoCancelamento(new Date());
 		pv.setDataViagem(new Date());
-		
+		pv.setIdCarrinhoCompra(1);
 		pv.setIdOrigemDestino(1);
-		
+		pv.setPrecoTotal(0);
+		pv.setIdHospedagem(idHospedagem);
 		pv.setIdHospedagem(idPassagem);
 		
 		this.pv.create();
 	}
 	
 	public void buscarPorId() {
-		Administrador adm = this.administradorDAO.findById(this.id);
-		this.id = adm.getId();
+		Administrador adm = this.administradorDAO.findById(this.getId());
+		this.setId(adm.getId());
 		this.setNome(adm.getNome());
 		this.setEmail(adm.getEmail());
 		this.setPassword(adm.getPassword());
@@ -216,7 +190,6 @@ public class Administrador extends Usuario {
 		this.setDataLogin(adm.getDataLogin());
 		this.setTipoUsuario(adm.getTipoUsuario());
 		this.setIdEndereco(adm.getIdEndereco());
-		
 		this.numeroViagemRevisadas = adm.getNumeroViagemRevisadas();
 		this.idUsuario = adm.getIdUsuario();
 		super.setEndereco(adm.getEndereco());

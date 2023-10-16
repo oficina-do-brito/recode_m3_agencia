@@ -106,7 +106,7 @@ public class ClienteDAO extends PadraoDao implements IGenericDAO<Cliente> {
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(sql);
-			super.pst.setInt(1, id.intValue());
+			super.pst.setInt(1, id);
 			
 			super.rs = super.pst.executeQuery();
 			

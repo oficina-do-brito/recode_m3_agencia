@@ -118,8 +118,7 @@ public class Inicial {
 				if (authenticado) {
 					if (userAuth.getTipoUsuario() == 3) {
 						c = new Cliente();
-						// *Passando id do usuario logado para cliente poder fazer abusca apartir do
-						// buscarPorId() dele, pelo id e trazer o cliente */
+						// *Passando id do usuario logado para cliente poder fazer abusca apartir do buscarPorId() dele, pelo id e trazer o cliente */
 						c.setId(userAuth.getId());
 						c.buscarPorId();
 						do {
@@ -179,6 +178,7 @@ public class Inicial {
 										"Atualização : digite seu tipo de Serviço que você oferece no momento \"1\" - par Fornecimento de Passagens \"2\" - Para Hospedagem : ");
 								tipoServico = sc.nextInt();
 								f.setTipoServico(tipoServico);
+								f.update();
 								break;
 							case 2:
 								ps = Passagem.preencherPassagem(sc);

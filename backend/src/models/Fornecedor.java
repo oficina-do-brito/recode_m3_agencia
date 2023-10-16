@@ -9,7 +9,6 @@ import DAO.FornecedorDAO;
 import models.utils.Verificadora;
 
 public class Fornecedor extends Usuario {
-	private Integer id;
 	private String CNPJ;
 	private Integer tipoServico;
 	private Integer idUsuario;
@@ -23,8 +22,7 @@ public class Fornecedor extends Usuario {
 	}
 
 	public Fornecedor(Integer id, String CNPJ, Integer tipoServico, Integer idUsuario) {
-		super();
-		this.id = id;
+		this.setId(id);
 		this.CNPJ = CNPJ;
 		this.tipoServico = tipoServico;
 		this.idUsuario = idUsuario;
@@ -34,8 +32,7 @@ public class Fornecedor extends Usuario {
 			Date dataLogin, Integer tipoUsuario, Integer idEndereco, String CNPJ, Integer tipoServico,
 			Integer idUsuario) {
 		super(idUsuario, nome, email, password, telefone, imagem, dataLogin, tipoUsuario, idEndereco);
-
-		this.id = id;
+		
 		this.CNPJ = CNPJ;
 		this.tipoServico = tipoServico;
 		this.idUsuario = idUsuario;
@@ -55,12 +52,12 @@ public class Fornecedor extends Usuario {
 	}
 
 	public void fornecer(Passagem ps) {
-		ps.setIdFornecedor(this.id);
+		ps.setIdFornecedor(this.getId());
 		ps.create();
 	}
 
 	public void fornecer(Hospedagem h) {
-		h.setIdFornecedor(this.id);
+		h.setIdFornecedor(this.getId());
 		h.create();
 	}
 
@@ -72,28 +69,8 @@ public class Fornecedor extends Usuario {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(id);
+		result = prime * result + Objects.hash(this.getId());
 		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Fornecedor other = (Fornecedor) obj;
-		return Objects.equals(id, other.id);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getCNPJ() {
@@ -144,21 +121,21 @@ public class Fornecedor extends Usuario {
 
 	@Override
 	public void create() {
-		this.id = this.fornecedorDAO.save(new Fornecedor(this.CNPJ, this.tipoServico, this.idUsuario));
+		this.setId(this.fornecedorDAO.save(new Fornecedor(this.CNPJ, this.tipoServico, this.idUsuario)));
 	}
 
 	@Override
 	public void update() {
-		if (this.id != null) {
-			this.fornecedorDAO.update(new Fornecedor(this.id, this.CNPJ, this.tipoServico, this.idUsuario));
+		if (this.getId() != null) {
+			this.fornecedorDAO.update(new Fornecedor(this.getId(), this.CNPJ, this.tipoServico, this.idUsuario));
 		}
 
 	}
 
 	@Override
 	public void delete() {
-		if (this.id != null) {
-			this.fornecedorDAO.deleteById(this.id);
+		if (this.getId() != null) {
+			this.fornecedorDAO.deleteById(this.getId());
 		} else {
 			System.out.println("Esse fornecedor \"Não foi encontrado\", logo não houve deleção.");
 		}
@@ -173,8 +150,8 @@ public class Fornecedor extends Usuario {
 	}
 
 	public void buscarPorId() {
-		Fornecedor f = this.fornecedorDAO.findById(this.id);
-		this.id = f.getId();
+		Fornecedor f = this.fornecedorDAO.findById(this.getId());
+		this.setId(f.getId());
 		this.setNome(f.getNome());
 		this.setEmail(f.getEmail());
 		this.setPassword(f.getPassword());

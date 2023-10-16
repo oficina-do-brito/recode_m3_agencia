@@ -107,27 +107,29 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 	@Override
 	public Fornecedor findById(Integer id) {
 		Fornecedor f = new Fornecedor();
-		String sql="SELECT idFornecedor,nome,email,password,telefone,imagem,tipoUsuario,dataLogin,fkEndereco,CNPJ,tipoServico,fkUsuario,CEP,estado,cidade,bairro,rua,numero FROM Usuario INNER JOIN Fornecedor on Usuario.idUsuario = Fornecedor.fkUsuario INNER JOIN Endereco on Usuario.fkEndereco = Endereco.idEndereco WHERE Fornecedor.idFornecedor = ?";
+		//idFornecedor,nome,email,password,telefone,imagem,tipoUsuario,dataLogin,fkEndereco,CNPJ,tipoServico,fkUsuario,CEP,estado,cidade,bairro,rua,numero
+		String sql="SELECT  * FROM Fornecedor JOIN Usuario ON  Fornecedor.fkUsuario = Usuario.idUsuario JOIN Endereco ON Endereco.idEndereco = Usuario.fkEndereco WHERE  Usuario.idUsuario=?";
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(sql);
-			super.pst.setInt(1,  id.intValue());
+			super.pst.setInt(1,id);
 			super.rs = super.pst.executeQuery();
 			while (super.rs.next()) {
+				 // Usuario id (Usuario) ,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,idEndereco;
+				 //fornecedor  id;CNPJ;tipoServico;idUsuario;
 				f.setId(super.rs.getInt("idFornecedor"));
-				f.setCNPJ(super.rs.getString("CNPJ"));
-				f.setTipoServico(super.rs.getInt("tipoServico"));
-				f.setTipoUsuario(super.rs.getInt("fkUsuario"));
 				f.setNome(super.rs.getString("nome"));
 				f.setEmail(super.rs.getString("email"));
 				f.setPassword(super.rs.getString("password"));
 				f.setTelefone(super.rs.getString("telefone"));
 				f.setImagem(super.rs.getString("imagem"));
-				f.setTipoUsuario(super.rs.getInt("tipoUsuario"));
 				f.setDataLogin(super.rs.getDate("dataLogin"));
 				f.setIdEndereco(super.rs.getInt("fkEndereco"));
-
-				f.setEndereco(super.rs.getInt("fkEndereco"), super.rs.getString("CEP"), super.rs.getString("estado"),
+				f.setTipoUsuario(super.rs.getInt("tipoUsuario"));
+				f.setCNPJ(super.rs.getString("CNPJ"));
+				f.setTipoServico(super.rs.getInt("tipoServico"));
+				
+				f.setEndereco(super.rs.getInt("idEndereco"), super.rs.getString("CEP"), super.rs.getString("estado"),
 						super.rs.getString("cidade"), super.rs.getString("bairro"), super.rs.getString("rua"),
 						super.rs.getInt("numero"));
 			}

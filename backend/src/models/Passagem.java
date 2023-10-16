@@ -158,6 +158,6 @@ public class Passagem implements ICRUD{
 			System.out.println("Informe 1 - para do tipo  aerea, 2 -  para do tipo  onibus");
 			tipo = sc.nextInt();
 		}while(!Verificadora.verificaTipoServicoExists(tipo));
-		return new Passagem(titulo, preco, tipo, null, null);
+		return new Passagem(titulo, preco, tipo, 0, 0);
 	}
 }

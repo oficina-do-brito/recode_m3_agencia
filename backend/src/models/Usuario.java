@@ -84,7 +84,13 @@ public class Usuario implements ICRUD {
 
 	public void setEndereco(Integer id, String cEP, String estado, String cidade, String bairro, String rua,
 			Integer numero) {
-		this.endereco = new Endereco(id, cEP, estado, cidade, bairro, rua, numero);
+		this.endereco.setId(id);
+		this.endereco.setCEP(cEP);
+		this.endereco.setEstado(estado);
+		this.endereco.setCidade(cidade);
+		this.endereco.setBairro(bairro);
+		this.endereco.setRua(rua);
+		this.endereco.setNumero(numero);
 	}
 
 	public Integer getId() {

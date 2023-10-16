@@ -20,15 +20,15 @@ public class DbTable {
 		return "CREATE TABLE IF NOT EXISTS Cliente (idCliente INTEGER AUTO_INCREMENT PRIMARY KEY,RG VARCHAR(7),CPF VARCHAR(11),numeroViagens INTEGER,cartaoCredito VARCHAR(16),fkUsuario INTEGER,FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario));";
 	}
 	public static String getDDLCreateCarrinhoCompra() {
-		return "CREATE TABLE IF NOT EXISTS CarrinhoCompra (idCarrinho INTEGER AUTO_INCREMENT PRIMARY KEY,valorTotal DECIMAL(2),formaPagamento INTEGER,quantItems INTEGER,fkCliente INTEGER,FOREIGN KEY(fkCliente) REFERENCES Cliente (idCliente));";
+		return "CREATE TABLE IF NOT EXISTS CarrinhoCompra (idCarrinho INTEGER AUTO_INCREMENT PRIMARY KEY,valorTotal DECIMAL(5),formaPagamento INTEGER,quantItems INTEGER,fkCliente INTEGER,FOREIGN KEY(fkCliente) REFERENCES Cliente (idCliente));";
 	}
 
 	public static String getDDLCreateHospedagem() {
-		return "CREATE TABLE IF NOT EXISTS Hospedagem (idHospedagem INTEGER AUTO_INCREMENT PRIMARY KEY,nome VARCHAR(10),imagem VARCHAR(10),diaria VARCHAR(10),preco DECIMAL(2),fkOrigem INTEGER,fkFornecedor INTEGER,FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor));";
+		return "CREATE TABLE IF NOT EXISTS Hospedagem (idHospedagem INTEGER AUTO_INCREMENT PRIMARY KEY,nome VARCHAR(50),imagem VARCHAR(150),diaria INTEGER,preco DECIMAL(5),fkOrigem INTEGER,fkFornecedor INTEGER,FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor));";
 	}
 
 	public static String getDDLCreatePassagem() {
-		return "CREATE TABLE IF NOT EXISTS Passagem (idPassagem INTEGER AUTO_INCREMENT PRIMARY KEY,titulo VARCHAR(150),preco DECIMAL(2),tipo INTEGER,fkFornecedor INTEGER,fkPacote INTEGER,FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor));";
+		return "CREATE TABLE IF NOT EXISTS Passagem (idPassagem INTEGER AUTO_INCREMENT PRIMARY KEY,titulo VARCHAR(150),preco DECIMAL(5),tipo INTEGER,fkFornecedor INTEGER,fkPacote INTEGER,FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor));";
 	}
 
 	public static String getDDLCreatePacoteViagem() {

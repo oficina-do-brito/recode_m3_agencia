@@ -1,8 +1,11 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+import DAO.OrigemDestinoDAO;
 import models.utils.ICRUD;
 
 public class OrigemDestino implements ICRUD {
@@ -14,6 +17,7 @@ public class OrigemDestino implements ICRUD {
 	private Integer idEndereco;
 
 	private Endereco endereco = new Endereco();
+	private OrigemDestinoDAO origemDestinoDAO = new OrigemDestinoDAO();
 
 	public OrigemDestino(Integer id, String nome, String imagem, String descricao, Integer tipo, Integer idEndereco) {
 		this.id = id;
@@ -110,22 +114,31 @@ public class OrigemDestino implements ICRUD {
 
 	@Override
 	public void create() {
-
+		this.id = this.origemDestinoDAO.save(new OrigemDestino(this.nome,this.imagem,this.descricao,this.tipo,this.idEndereco));
 	}
 
 	@Override
 	public void delete() {
-
+		if (this.id != null) {
+			this.origemDestinoDAO.deleteById(this.id);
+		} else {
+			System.out.println("Esse Destino ou Origem \"Não foi encontrado\", logo não houve deleção.");
+		}
 	}
 
 	@Override
 	public void readAll() {
-
+		List<OrigemDestino>  origemDestino = new ArrayList<>();
+		for (OrigemDestino u : origemDestino) {
+			System.out.println(u.toString());
+		}
 	}
 
 	@Override
 	public void update() {
-
+		if(this.id!=null) {
+			this.origemDestinoDAO.update(new OrigemDestino(this.id,this.nome,this.imagem,this.descricao,this.tipo,this.idEndereco));
+		}
 	}
 	
 	public static OrigemDestino preencherOrigemDestino(Scanner sc) {
@@ -140,7 +153,7 @@ public class OrigemDestino implements ICRUD {
 		System.out.print("Informe o tipo 1 - origem 2 - Destino: ");
 		tipo = sc.nextInt();
 		
-		return new OrigemDestino(nome,imagem,descricao,tipo,null);
+		return new OrigemDestino(nome,imagem,descricao,tipo,0);
 	}
 
 }

@@ -110,15 +110,16 @@ public class PacoteViagemDAO extends PadraoDao implements IGenericDAO<PacoteViag
 		PacoteViagem p = null;
 		try {
 			super.c1 = Db.getConnection();
-			super.st = c1.createStatement();
-			super.rs = super.st.executeQuery("SELECT FROM PacoteViagem WHERE PacoteViagem.idPacote =?");
-			super.rs.first();
+			super.pst = super.c1.prepareStatement("SELECT * FROM PacoteViagem WHERE PacoteViagem.idPacote =?");
+			super.rs = super.pst.executeQuery();
+			while(super.rs.next()){
 			p = new PacoteViagem(super.rs.getInt("idPacote"), super.rs.getString("titulo"), super.rs.getInt("valorDesconto"),
 					super.rs.getDouble("precoTotal"), super.rs.getString("possuiHospedagem"),
 					super.rs.getString("status"), super.rs.getString("meioTransporte"), super.rs.getString("imagem"),
 					super.rs.getDate("prazoCancelamento"), super.rs.getDate("dataViagem"),
 					super.rs.getInt("fkOrigem"), super.rs.getInt("fkHospedagem"),
 					super.rs.getInt("fkCarrinho"));
+			}
 			return p;
 		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());

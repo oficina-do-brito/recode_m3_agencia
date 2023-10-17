@@ -192,7 +192,7 @@ public class PacoteViagem implements ICRUD {
 
 	@Override
 	public String toString() {
-		return "PacoteViagem [titulo=" + titulo + ", valorDesconto=" + valorDesconto + ", precoTotal=" + precoTotal
+		return "PacoteViagem [id=" + id + ",titulo=" + titulo + ", valorDesconto=" + valorDesconto + ", precoTotal=" + precoTotal
 				+ ", possuiHospedagem=" + possuiHospedagem + ", status=" + status + ", meioTransporte=" + meioTransporte
 				+ ", imagem=" + imagem + ", prazoCancelamento=" + prazoCancelamento + ", dataViagem=" + dataViagem
 				+ ", idOrigemDestino=" + idOrigemDestino + ", idHospedagem=" + idHospedagem + ", idCarrinhoCompra="

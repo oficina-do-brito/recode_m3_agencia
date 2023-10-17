@@ -3,19 +3,19 @@ USE agencia;
 -- Geração de Modelo físico
 -- Sql ANSI 2003 - brModelo.
 CREATE TABLE IF NOT EXISTS Usuario (
-id_usuario INTEGER PRIMARY KEY,
+idUsuario INTEGER AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(150),
 email VARCHAR(150),
 password VARCHAR(50),
 telefone VARCHAR(50),
-tipo_usuario INTEGER,
-imagem VARCHAR(500),
-data_login DATETIME,
-fk_endereco INTEGER
+tipoUsuario INTEGER,
+imagem TEXT,
+dataLogin DATETIME,
+fkEndereco INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Endereco (
-id_endereco INTEGER PRIMARY KEY,
+idEndereco INTEGER AUTO_INCREMENT PRIMARY KEY,
 CEP VARCHAR(9),
 estado VARCHAR(2),
 cidade VARCHAR(150),
@@ -25,96 +25,96 @@ numero INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Fornecedor (
-id_fornecedor INTEGER PRIMARY KEY,
+idFornecedor INTEGER AUTO_INCREMENT PRIMARY KEY,
 CNPJ VARCHAR(14),
-tipo_servico INTEGER,
-fk_usuario INTEGER,
-FOREIGN KEY(fk_usuario) REFERENCES Usuario (id_usuario)
+tipoServico INTEGER,
+fkUsuario INTEGER,
+FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario)
 );
 
 CREATE TABLE IF NOT EXISTS Administrador (
-id_administrador INTEGER PRIMARY KEY,
-numero_viagem_revisadas INTEGER,
-fk_usuario INTEGER,
-FOREIGN KEY(fk_usuario) REFERENCES Usuario (id_usuario)
+idAdministrador INTEGER AUTO_INCREMENT PRIMARY KEY,
+nViagensRevisadas INTEGER,
+fkUsuario INTEGER,
+FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario)
 );
 
 CREATE TABLE IF NOT EXISTS Cliente (
-id_cliente INTEGER PRIMARY KEY,
+idCliente INTEGER AUTO_INCREMENT PRIMARY KEY,
 RG VARCHAR(7),
 CPF VARCHAR(11),
-numero_viagens INTEGER,
-cartao_credito VARCHAR(16),
-fk_usuario INTEGER,
-FOREIGN KEY(fk_usuario) REFERENCES Usuario (id_usuario)
+numeroViagens INTEGER,
+cartaoCredito VARCHAR(16),
+fkUsuario INTEGER,
+FOREIGN KEY(fkUsuario) REFERENCES Usuario (idUsuario)
 );
 
 CREATE TABLE IF NOT EXISTS CarrinhoCompra (
-id_carrinho INTEGER PRIMARY KEY,
-valor_total DECIMAL(2),
-forma_pagamento INTEGER,
-quant_items INTEGER,
-fk_cliente INTEGER,
-FOREIGN KEY(fk_cliente) REFERENCES Cliente (id_cliente)
+idCarrinho INTEGER AUTO_INCREMENT PRIMARY KEY,
+valorTotal DECIMAL(5,2),
+formaPagamento INTEGER,
+quantItems INTEGER,
+fkCliente INTEGER,
+FOREIGN KEY(fkCliente) REFERENCES Cliente (idCliente)
 );
 
 CREATE TABLE IF NOT EXISTS Hospedagem (
-id_hospedagem INTEGER PRIMARY KEY,
-nome VARCHAR(10),
-imagem VARCHAR(10),
-diaria VARCHAR(10),
-preco DECIMAL(2),
-fk_origem INTEGER,
-fk_fornecedor INTEGER,
-FOREIGN KEY(fk_fornecedor) REFERENCES Fornecedor (id_fornecedor)
+idHospedagem INTEGER AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR(50),
+imagem TEXT,
+diaria INTEGER,
+preco DECIMAL(5,2),
+fkOrigem INTEGER,
+fkFornecedor INTEGER,
+FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor)
 );
 
 CREATE TABLE IF NOT EXISTS Passagem (
-id_passagem INTEGER PRIMARY KEY,
+idPassagem INTEGER AUTO_INCREMENT PRIMARY KEY,
 titulo VARCHAR(150),
-preco DECIMAL(2),
+preco DECIMAL(5,2),
 tipo INTEGER,
-fk_fornecedor INTEGER,
-fk_pacote INTEGER,
-FOREIGN KEY(fk_fornecedor) REFERENCES Fornecedor (id_fornecedor)
+fkFornecedor INTEGER,
+fkPacote INTEGER,
+FOREIGN KEY(fkFornecedor) REFERENCES Fornecedor (idFornecedor)
 );
 
 CREATE TABLE IF NOT EXISTS PacoteViagem (
-id_pacote INTEGER PRIMARY KEY,
+idPacote INTEGER AUTO_INCREMENT PRIMARY KEY,
 titulo VARCHAR(150),
-valor_desconto INTEGER,
-preco_total DECIMAL(2),
-possui_hospedagem VARCHAR(50),
+valorDesconto INTEGER,
+precoTotal DECIMAL(5,2),
+possuiHospedagem VARCHAR(50),
 status VARCHAR(20),
-meio_transporte VARCHAR(50),
-imagem VARCHAR(150),
-prazo_cancelamento DATETIME,
-data_viagem DATETIME,
-fk_origem INTEGER,
-fk_hospedagem INTEGER,
-fk_carrinho INTEGER,
-FOREIGN KEY(fk_hospedagem) REFERENCES Hospedagem (id_hospedagem),
-FOREIGN KEY(fk_carrinho) REFERENCES CarrinhoCompra (id_carrinho)
+meioTransporte VARCHAR(50),
+imagem TEXT,
+prazoCancelamento DATETIME,
+dataViagem DATETIME,
+fkOrigem INTEGER,
+fkHospedagem INTEGER,
+fkCarrinho INTEGER,
+FOREIGN KEY(fkHospedagem) REFERENCES Hospedagem (idHospedagem),
+FOREIGN KEY(fkCarrinho) REFERENCES CarrinhoCompra (idCarrinho)
 );
 
 CREATE TABLE IF NOT EXISTS OrigemDestino (
-id_origem INTEGER PRIMARY KEY,
+idOrigem INTEGER AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(150),
-imagem VARCHAR(500),
-descricao VARCHAR(500),
+imagem TEXT,
+descricao TEXT,
 tipo INTEGER,
-fk_endereco INTEGER,
-FOREIGN KEY(fk_endereco) REFERENCES Endereco (id_endereco)
+fkEndereco INTEGER,
+FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco)
 );
 
 CREATE TABLE IF NOT EXISTS revisa (
-fk_administrador INTEGER,
-fk_pacote INTEGER,
-FOREIGN KEY(fk_administrador) REFERENCES Administrador (id_administrador),
-FOREIGN KEY(fk_pacote) REFERENCES PacoteViagem (id_pacote)
+fkAdministrador INTEGER,
+fkPacote INTEGER,
+FOREIGN KEY(fkAdministrador) REFERENCES Administrador (idAdministrador),
+FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote)
 );
 
-ALTER TABLE Usuario ADD FOREIGN KEY(fk_endereco) REFERENCES Endereco (id_endereco);
-ALTER TABLE Hospedagem ADD FOREIGN KEY(fk_origem) REFERENCES OrigemDestino (id_origem);
-ALTER TABLE Passagem ADD FOREIGN KEY(fk_pacote) REFERENCES PacoteViagem (id_pacote);
-ALTER TABLE PacoteViagem ADD FOREIGN KEY(fk_origem) REFERENCES OrigemDestino (id_origem);
+ALTER TABLE Usuario ADD FOREIGN KEY(fkEndereco) REFERENCES Endereco (idEndereco);
+ALTER TABLE Hospedagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);
+ALTER TABLE Passagem ADD FOREIGN KEY(fkPacote) REFERENCES PacoteViagem (idPacote);
+ALTER TABLE PacoteViagem ADD FOREIGN KEY(fkOrigem) REFERENCES OrigemDestino (idOrigem);

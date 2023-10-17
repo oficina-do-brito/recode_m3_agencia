@@ -34,7 +34,7 @@ public class Utils {
 		System.out.println("[2] para fornecer Passagem");
 		System.out.println("[3] para fornecer Hospedagem");
 		System.out.println("[4] para deletar forenecor");
-		System.out.println("[5 para mostrar todos os fornecedores");
+		System.out.println("[5] para mostrar todos os fornecedores");
 		System.out.println("[0] para voltar ao menu principal.");
 		System.out.printf("Eai major, qual opção você escolheu? %s", escreverColorido(Colors.YELLOW,"(número):"));
 	}
@@ -42,12 +42,10 @@ public class Utils {
 	public void exibirMenuAdmin() {
 		System.out.printf("%n");
 		System.out.println("[1] para atualizar Administrador");
-		System.out.println("[2] para deletar Administrador");
-		System.out.println("[3] para ver todos os Administradores");
-		System.out.println("[4] para montar um pacote viagem");
-		System.out.println("[5] para deletar usuario");
-		System.out.println("[6] para ver todos os usuarios");
-		System.out.println("[7] para ver um usuario especifico");
+		System.out.println("[2] para ver todos os Administradores");
+		System.out.println("[3] para montar um pacote viagem");
+		System.out.println("[4] para ver todos os usuarios");
+		System.out.println("[5] para deletar Administrador");
 		System.out.println("[0] para voltar ao menu principal...");
 		System.out.printf("Eai major, qual opção você escolheu? %s", escreverColorido(Colors.YELLOW,"(número):"));
 	}

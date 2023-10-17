@@ -162,10 +162,10 @@ public class Administrador extends Usuario {
 		meioTransporte = sc.nextLine();
 		pv.setMeioTransporte(meioTransporte);
 		
-		
 		System.out.println("O caminho de uma imagem para associar ao pacote: ");
 		sc.nextLine();
 		imagem = sc.nextLine();
+		sc.nextLine();
 		pv.setImagem(imagem);
 		
 		pv.setPrazoCancelamento(new Date());

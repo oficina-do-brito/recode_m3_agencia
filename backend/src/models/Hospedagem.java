@@ -1,8 +1,11 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+import DAO.HospedagemDAO;
 import models.utils.ICRUD;
 
 public class Hospedagem implements ICRUD {
@@ -13,6 +16,8 @@ public class Hospedagem implements ICRUD {
 	private double preco;
 	private Integer idOrigemDestino;
 	private Integer idFornecedor;
+	
+	private HospedagemDAO hospedagemDAO =  new HospedagemDAO();
 
 	public Hospedagem(Integer id, String nome, String imagem, Integer diaria, double preco, Integer idOrigemDestino,
 			Integer idFornecedor) {
@@ -120,35 +125,46 @@ public class Hospedagem implements ICRUD {
 	}
 
 	public void create() {
-	}
-
-	public void reader() {
+		this.id = this.hospedagemDAO.save(new Hospedagem(this.nome,this.imagem,this.diaria,this.preco,this.idOrigemDestino,this.idFornecedor));
 	}
 
 	public void update() {
-
+		if(this.id!=null) {
+			this.hospedagemDAO.update(new Hospedagem(this.id,this.nome,this.imagem,this.diaria,this.preco,this.idOrigemDestino,this.idFornecedor));
+		}
 	}
 
 	public void delete() {
+		if (this.id != null) {
+			this.hospedagemDAO.deleteById(this.id);
+		} else {
+			System.out.println("Essa Hospedagem \"Não foi encontrado\", logo não houve deleção.");
+		}
 	}
 
 	@Override
 	public void readAll() {
+		List<Hospedagem>  hlist = new ArrayList<>();
+		for (Hospedagem u : hlist) {
+			System.out.println(u.toString());
+		}
 
 	}
 	public static Hospedagem preencherHospedagem(Scanner sc) {
 		//Integer id, String nome, String imagem, Integer diaria, double preco, Integer idOrigemDestino,Integer idFornecedor
 		String nome,imagem;Integer diaria;double preco;
 		System.out.print("Informe um nome para a Hospedagem: ");
-		nome = sc.next();
+		sc.nextLine();
+		nome = sc.nextLine();
 		System.out.print("Informe a url de uma imagem da Hospedagem: ");
-		imagem = sc.next();
+		sc.nextLine();
+		imagem = sc.nextLine();
 		System.out.print("Informe o numero de dias disponiveis correspondente ao periodo de Hospedagem: ");
 		diaria = sc.nextInt();
 		System.out.print("Informe o valor da Hospedagem: ");
 		preco = sc.nextDouble();
 		
-		return new Hospedagem(nome,imagem,diaria,preco,null,null);
+		return new Hospedagem(nome,imagem,diaria,preco,0,0);
 	}
 
 }

@@ -38,7 +38,6 @@ public class AdministradorDAO extends PadraoDao implements IGenericDAO<Administr
 			} else {
 				System.out.println("nenhuma Administrador foi criado");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

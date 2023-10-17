@@ -18,16 +18,15 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 	@Override
 	public Integer save(Hospedagem obj) {
 		try {
-			//idHospedagem,nome,imagem ,diaria ,preco ,fkOrigem ,fkFornecedor
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO Hospedagem (nome,imagem,diaria,preco,fkOrigem,fkFornecedor) VALUES (?,?,?,?,?,?,?)",
+					"INSERT INTO Hospedagem (nome,imagem,diaria,preco,fkOrigem,fkFornecedor) VALUES (?,?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getImagem());
 			super.pst.setInt(3, obj.getDiaria());
 			super.pst.setDouble(4, obj.getPreco());
-			super.pst.setInt(5, obj.getIdOrigemDestino());
+			super.pst.setNull(5, 0); // super.pst.setInt(5, obj.getIdOrigemDestino());
 			super.pst.setInt(6, obj.getIdFornecedor());
 
 			int linhasAlteradas = super.pst.executeUpdate();
@@ -103,9 +102,9 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			super.pst = c1.prepareStatement("SELECT FROM Hospedagem WHERE Hospedagem.idHospedagem =?");
 			super.rs = super.pst.executeQuery();
 			super.rs.first();
-			u = new Hospedagem(super.rs.getInt("idHospedagem"), super.rs.getString("nome"), super.rs.getString("imagem"),
-					super.rs.getInt("diaria"), super.rs.getDouble("preco"), super.rs.getInt("fkOrigem"),
-					super.rs.getInt("fkFornecedor"));
+			u = new Hospedagem(super.rs.getInt("idHospedagem"), super.rs.getString("nome"),
+					super.rs.getString("imagem"), super.rs.getInt("diaria"), super.rs.getDouble("preco"),
+					super.rs.getInt("fkOrigem"), super.rs.getInt("fkFornecedor"));
 			return u;
 
 		} catch (SQLException e) {
@@ -115,7 +114,7 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			Db.closeResultSet(super.rs);
 		}
 	}
-	
+
 	@Override
 	public ArrayList<Hospedagem> findAll() {
 		ArrayList<Hospedagem> Hospedagems = new ArrayList<Hospedagem>();
@@ -125,9 +124,8 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			super.rs = super.st.executeQuery("SELECT * FROM Hospedagem");
 			while (super.rs.next()) {
 				Hospedagem u = new Hospedagem(super.rs.getInt("idHospedagem"), super.rs.getString("nome"),
-						super.rs.getString("imagem"),
-						super.rs.getInt("diaria"), super.rs.getDouble("preco"), super.rs.getInt("fkOrigem"),
-						super.rs.getInt("fkFornecedor"));
+						super.rs.getString("imagem"), super.rs.getInt("diaria"), super.rs.getDouble("preco"),
+						super.rs.getInt("fkOrigem"), super.rs.getInt("fkFornecedor"));
 				Hospedagems.add(u);
 			}
 			return Hospedagems;
@@ -139,5 +137,4 @@ public class HospedagemDAO extends PadraoDao implements IGenericDAO<Hospedagem> 
 			Db.closeResultSet(super.rs);
 		}
 	}
-
 }

@@ -21,7 +21,7 @@ public class Inicial {
 	public static void main(String[] args) throws IOException {
 		Utils uts = new Utils();
 		Connection conexao = Db.getConnection();
-		System.out.println("Espere um momento Major, criando as tabelas ...");
+		System.out.println("Espere um momento, criando as tabelas ...");
 		Db.criarDatabase();
 		System.out.printf(Utils.escreverColorido(Colors.AZUL, "Se não existiam foram criadas") + " %n %n");
 
@@ -39,11 +39,11 @@ public class Inicial {
 		Hospedagem h = null;
 		Passagem ps = null;
 		OrigemDestino od = null;
-
 		do {
 			uts.exibirMenuPrincipal();
 			opcao = sc.nextInt();
 			System.out.printf("%n %n");
+
 			switch (opcao) {
 			case 0:
 				System.out.println("Fechando programa...");
@@ -56,7 +56,7 @@ public class Inicial {
 					System.out.printf("%n %n");
 					switch (opcaoTwo) {
 					case 0:
-						System.out.println("Você ira voltar ao menu principal...");
+						System.out.println("Você ira voltar ao menu principal.");
 						break;
 					case 1:
 						u = Usuario.preencherUsuario(sc);
@@ -91,19 +91,18 @@ public class Inicial {
 					case 3:
 						u.delete();
 						break;
-					case 4:
-						u.readAll();
-						break;
-					case 5:
-						int idBuscar;
-						System.out.println("Informe o id do usuario que vc quer buscar:");
-						idBuscar = sc.nextInt();
-						u.buscarPorID(idBuscar);
-						break;
+//					case 4:
+//						u.readAll();
+//						break;
+//					case 5:
+//						int idBuscar;
+//						System.out.println("Informe o id do usuario que vc quer buscar:");
+//						idBuscar = sc.nextInt();
+//						u.buscarPorID(idBuscar);
+//						break;
 					default:
 						System.out.println("opção invalida");
 					}
-
 				} while (opcaoTwo != 0);
 				break;
 			case 2: // Logar
@@ -127,7 +126,7 @@ public class Inicial {
 							System.out.printf("%n %n");
 							switch (opcaoTwo) {
 							case 0:
-								System.out.println("Você ira voltar ao menu principal...");
+								System.out.printf("Voltando ao menu principal...%n %n");
 								break;
 							case 1:
 								String cartaoCredito;
@@ -170,7 +169,7 @@ public class Inicial {
 							System.out.printf("%n %n");
 							switch (opcaoTwo) {
 							case 0:
-								System.out.println("Você ira voltar ao menu principal...");
+								System.out.printf("Voltando ao menu principal...%n %n");
 								break;
 							case 1:
 								int tipoServico;
@@ -189,8 +188,7 @@ public class Inicial {
 									System.out.println("impossivel criar passagem sem fornecedor..");
 								}
 								break;
-							case 3: // fornecer hospedagem, cria-se uma hospedagem,pega-se um endereço para destino
-									// coloca na hospedagem, toda hospedagem é um destino para o cliente
+							case 3: // fornecer hospedagem, cria-se uma hospedagem,pega-se um endereço para destino coloca na hospedagem, toda hospedagem é um destino para o cliente
 								int idEndereco;
 								h = Hospedagem.preencherHospedagem(sc);
 								h.setIdFornecedor(f.getId());
@@ -213,7 +211,6 @@ public class Inicial {
 							default:
 								System.out.println("opção invalida");
 							}
-
 						} while (opcaoTwo != 0);
 					} else if (userAuth.getTipoUsuario() == 1) {
 						a = new Administrador();
@@ -222,25 +219,29 @@ public class Inicial {
 						do {
 							uts.exibirMenuAdmin();
 							opcaoTwo = sc.nextInt();
-							System.out.printf("%n %n %n %n");
+							System.out.printf("%n %n");
 							switch (opcaoTwo) {
 							case 0:
-								System.out.println("Você ira voltar ao menu principal...");
+								System.out.printf("Voltando ao menu principal...%n %n");
 								break;
 							case 1:
 								int n;
-								System.out.print("Digite o numero ViagemRevisadas: ");
+								System.out.print("Corrija o numero revisões: ");
 								n = sc.nextInt();
 								a.setNumeroViagemRevisadas(n);
 								break;
 							case 2:
-								a.delete();
-								break;
-							case 3:
 								a.readAll();
 								break;
-							case 4:
+							case 3:
 								a.montarPacotes(sc);
+								break;
+							case 4:
+								u=new Usuario();
+								u.readAll();
+								break;
+							case 5:
+								a.delete();
 								break;
 							default:
 								System.out.println("opção invalida");
@@ -248,20 +249,20 @@ public class Inicial {
 
 						} while (opcaoTwo != 0);
 					} else
-						System.out.println("Não existe esse tipo de Usuariono sistema.");
+						System.out.println("Não existe esse tipo de Usuario no sistema.");
 				} else
 					System.out.println(Utils.escreverColorido(Colors.VERMELHO,
-							"Usuario não consta no sistema não tente novamente!"));
+							"Usuario não consta no sistema, tente novamente!"));
 				break;
 			case 3: // Menu Pacotes de Viagens
 				pv = new PacoteViagem();
 				do {
 					uts.exibirMenuViagem();
 					opcaoTwo = sc.nextInt();
-					System.out.printf("%n %n %n %n");
+					System.out.printf("%n %n");
 					switch (opcaoTwo) {
 					case 0:
-						System.out.println("Você ira voltar ao menu principal...");
+						System.out.printf("Voltando ao menu principal...%n %n");
 						break;
 					case 1:
 						pv.readAll();
@@ -272,7 +273,7 @@ public class Inicial {
 				} while (opcaoTwo != 0);
 				break;
 			default:
-				System.out.println("Opção invalida...");
+				System.out.println("Opção invalida");
 				break;
 			}
 		} while (opcao != 0);

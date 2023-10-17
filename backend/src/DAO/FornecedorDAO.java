@@ -144,12 +144,12 @@ public class FornecedorDAO extends PadraoDao implements IGenericDAO<Fornecedor> 
 
 	@Override
 	public ArrayList<Fornecedor> findAll() {
-		ArrayList<Fornecedor> Fornecedors = new ArrayList<Fornecedor>();
 		try {
+			ArrayList<Fornecedor> Fornecedors = new ArrayList<Fornecedor>();
 			super.c1 = Db.getConnection();
 			super.st = c1.createStatement();
 			super.rs = super.st.executeQuery(
-					"SELECT id_fornecedor,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,fkEndereco,CNPJ,tipoServico,fkUsuario FROM Fornecedor INNER INNER JOIN Usuario on Fornecedor.fkUsuario =  Usuario.idUsuario");
+					"SELECT idFornecedor,nome,email,password,telefone,imagem,dataLogin,tipoUsuario,fkEndereco,CNPJ,tipoServico,fkUsuario FROM Fornecedor INNER JOIN Usuario on Usuario.idUsuario = Fornecedor.fkUsuario");
 			while (super.rs.next()) {
 				Fornecedor u = new Fornecedor(super.rs.getInt("idFornecedor"), super.rs.getString("nome"),
 						super.rs.getString("email"), super.rs.getString("password"), super.rs.getString("telefone"),

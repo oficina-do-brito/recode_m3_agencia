@@ -266,7 +266,8 @@ public class Usuario implements ICRUD {
 
 		do {
 			System.out.println("Digite o endereço de uma imagem  sua: ");
-			imagem = sc.next();
+			sc.nextLine();
+			imagem = sc.nextLine();
 		} while (imagem.length() > 600);
 
 		do {
@@ -281,7 +282,7 @@ public class Usuario implements ICRUD {
 		} while (cep.length() > 150);
 
 		do {
-			System.out.println("Informe o seu estado onde reside : ");
+			System.out.println("Informe a (Sigla) seu estado onde reside : ");
 			estado = sc.next();
 		} while (!Verificadora.verificaEstado(estado));
 

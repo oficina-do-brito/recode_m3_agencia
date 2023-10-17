@@ -21,13 +21,13 @@ public class OrigemDestinoDAO extends PadraoDao implements IGenericDAO<OrigemDes
 		try {
 			super.c1 = Db.getConnection();
 			super.pst = super.c1.prepareStatement(
-					"INSERT INTO OrigemDestino (nome,imagem,descricao,tipo,fkEndereco) VALUES (?,?,?,?,?,?,?,?)",
+					"INSERT INTO OrigemDestino (nome,imagem,descricao,tipo,fkEndereco) VALUES (?,?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			super.pst.setString(1, obj.getNome());
 			super.pst.setString(2, obj.getImagem());
 			super.pst.setString(3, obj.getDescricao());
 			super.pst.setInt(4, obj.getTipo());
-			super.pst.setInt(5, obj.getIdEndereco());
+			super.pst.setNull(5,0); //super.pst.setInt(5, obj.getIdEndereco());
 			int l = super.pst.executeUpdate();
 			if (l > 0) {
 				int id = 0;

@@ -26,7 +26,7 @@ public class PassagemDAO extends PadraoDao implements IGenericDAO<Passagem>{
 			super.pst.setDouble(2, obj.getPreco());
 			super.pst.setInt(3, obj.getTipo());
 			super.pst.setInt(4, obj.getIdFornecedor());
-			super.pst.setInt(5, obj.getIdPacoteViagem());
+			super.pst.setNull(5, 0); // super.pst.setInt(5, obj.getIdPacoteViagem());
 
 			int linhasAlteradas = super.pst.executeUpdate();
 			if (linhasAlteradas > 0) {
